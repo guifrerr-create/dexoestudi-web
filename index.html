@@ -76,30 +76,32 @@
 <section class="sec wrap" id="contacte" aria-labelledby="h-parlem">
   <div class="sec-head"><div><h2 id="h-parlem">Parlem</h2><p>Expliqueu-me què voleu construir o rehabilitar i us respondré personalment.</p></div></div>
   <div class="contact">
+    <div class="mapcol">
+      <div class="map"><iframe title="Mapa de l'estudi dexo a Balaguer" src="https://www.google.com/maps?q=Passatge+Gaspar+de+Portol%C3%A0+1,+25600+Balaguer&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+    </div>
     <div class="side">
       <div class="cbox">
         <a class="crow" href="mailto:info@dexoestudi.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><div><h3>Correu</h3><p>info@dexoestudi.com</p></div></a>
         <a class="crow" href="tel:+34606750036"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/></svg><div><h3>Telèfon</h3><p>+34 606 750 036</p></div></a>
         <a class="crow" href="https://www.google.com/maps/search/?api=1&amp;query=Passatge+Gaspar+de+Portol%C3%A0+1+25600+Balaguer" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><h3>Estudi</h3><p>Ptge. Gaspar de Portolà, 1, 1r 1a · 25600 Balaguer</p></div></a>
       </div>
-      <div class="map"><iframe title="Mapa de l'estudi dexo a Balaguer" src="https://www.google.com/maps?q=Passatge+Gaspar+de+Portol%C3%A0+1,+25600+Balaguer&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+      <form class="cform" name="contacte" method="POST" action="https://formsubmit.co/info@dexoestudi.com">
+        <input type="hidden" name="_subject" value="Nou missatge del web dexo">
+        <input type="hidden" name="_next" value="https://dexoestudi.com/gracies.html">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <p class="hp"><label>No ompliu aquest camp <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
+        <label>Nom<input type="text" name="nom" autocomplete="name" required></label>
+        <label>Correu<input type="email" name="correu" autocomplete="email" required></label>
+        <label>Telèfon<input type="tel" name="telefon" autocomplete="tel"></label>
+        <label>Municipi de l'obra<input type="text" name="municipi"></label>
+        <label class="full">Què voleu construir o rehabilitar?<textarea name="missatge" rows="3" required></textarea></label>
+        <div class="foot">
+          <label class="check"><input type="checkbox" name="privadesa" value="acceptada" required>Accepto la <a href="privadesa.html" style="text-decoration:underline">política de privadesa</a></label>
+          <button type="submit" class="btn plus"><span class="lbl">Envia el missatge</span><svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line class="h" x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/></svg></button>
+        </div>
+      </form>
     </div>
-    <form class="cform" name="contacte" method="POST" action="https://formsubmit.co/info@dexoestudi.com">
-      <input type="hidden" name="_subject" value="Nou missatge del web dexo">
-      <input type="hidden" name="_next" value="https://dexoestudi.com/gracies.html">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <p class="hp"><label>No ompliu aquest camp <input name="_honey" tabindex="-1" autocomplete="off"></label></p>
-      <label>Nom<input type="text" name="nom" autocomplete="name" required></label>
-      <label>Correu<input type="email" name="correu" autocomplete="email" required></label>
-      <label>Telèfon<input type="tel" name="telefon" autocomplete="tel"></label>
-      <label>Municipi de l'obra<input type="text" name="municipi"></label>
-      <label class="full">Què voleu construir o rehabilitar?<textarea name="missatge" rows="3" required></textarea></label>
-      <div class="foot">
-        <label class="check"><input type="checkbox" name="privadesa" value="acceptada" required>Accepto la <a href="privadesa.html" style="text-decoration:underline">política de privadesa</a></label>
-        <button type="submit" class="btn plus"><span class="lbl">Envia el missatge</span><svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line class="h" x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/></svg></button>
-      </div>
-    </form>
   </div>
 </section>
 </main>

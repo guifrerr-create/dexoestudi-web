@@ -224,3 +224,12 @@ form.cform{grid-column:auto;padding:20px;gap:10px}
 .filters .flt[aria-pressed="true"] .pl{transform:rotate(180deg)}
 .filters .flt[aria-pressed="true"] .pl .v{transform:scaleY(0)}
 .filters .flt[aria-pressed="true"]:hover .pl{transform:rotate(180deg)}
+
+/* Parlem: mapa a l'esquerra, contacte i formulari a la dreta */
+.contact{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:stretch}
+@media (max-width:820px){.contact{grid-template-columns:1fr}}
+.mapcol{display:flex}
+.mapcol .map{flex:1;min-height:340px}
+.mapcol .map iframe{height:100%;min-height:340px}
+.contact .side{display:flex;flex-direction:column;gap:12px}
+.contact .side form.cform{flex:1}
