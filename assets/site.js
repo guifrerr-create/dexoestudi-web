@@ -93,7 +93,7 @@
   /* portada: Som + paraula */
   const word = document.getElementById('word');
   if (word) {
-    const W = ['arquitectura', 'disseny', 'rehabilitació'];
+    const W = ['arquitectura', 'disseny', 'rehabilitació', 'execució', 'seguretat'];
     let i = 0;
     const show = () => {
       const w = W[i % W.length];
