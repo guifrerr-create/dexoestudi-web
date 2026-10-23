@@ -233,3 +233,10 @@ form.cform{grid-column:auto;padding:20px;gap:10px}
 .mapcol .map iframe{height:100%;min-height:340px}
 .contact .side{display:flex;flex-direction:column;gap:12px}
 .contact .side form.cform{flex:1}
+
+/* formulari reduït */
+.contact .side form.cform{flex:0 0 auto;padding:14px;gap:8px}
+.cform input[type=text],.cform input[type=email],.cform input[type=tel],.cform textarea{min-height:40px;padding:9px 12px;font-size:14px}
+.cform ::placeholder{color:#8a8d94}
+.cform .foot{margin-top:0}
+.cform .check{min-height:36px;font-size:13px}
