@@ -3,7 +3,7 @@
   const P = [
     ['Rehabilitación integral de edificio entre medianeras', 'Rehabilitación', 'Centro histórico de Balaguer', [H, R], 'mitgeres-historic'],
     ['Restaurante La Tagliatella', 'Reforma de local para restaurante', 'Balaguer', [R, A], 'tagliatella', 2025],
-    ['Sala de actos del Palau Marc', 'Reforma para el Departamento de Cultura', 'Barcelona', [R, E], 'palau-marc'],
+    ['Sala de actos del Palau Marc', 'Reforma para el Departamento de Cultura', 'Barcelona', [R, E], 'palau-marc', 2024],
     ['Reforma integral de vivienda', 'Reforma', 'Balaguer', [H, R], 'reforma-integral-habitatge'],
     ['Reforma interior de vivienda unifamiliar', 'Dirección de ejecución', 'Barcelona', [H, R, D], 'escala-barcelona'],
     ['Reforma de la masía els Clotats', 'Rehabilitación', 'Gerb, Os de Balaguer', [H, R], 'clotats'],
