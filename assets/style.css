@@ -437,3 +437,5 @@ form.cform.sending button[type=submit]{opacity:.5;pointer-events:none}
 @media (max-width:760px){header.top nav{font-size:14px;gap:12px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;white-space:nowrap}header.top nav::-webkit-scrollbar{display:none}header.top nav a{flex:0 0 auto}}
 @media (max-width:360px){header.top nav{justify-content:flex-start;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}}
 .aw-none{visibility:hidden}
+header.top .lang{font-size:13px;font-weight:600;letter-spacing:.04em;padding:8px 10px;border-radius:999px;color:var(--mute);transition:color .2s,background .2s}
+header.top .lang:hover{color:var(--ink);background:var(--soft)}
