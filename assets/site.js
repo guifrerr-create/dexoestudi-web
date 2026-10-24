@@ -32,6 +32,7 @@
   ].map(([title, type, place, cats, img]) => ({ title, type, place, cats, key: img, src: 'img/projectes/' + img + '.jpg' }));
   /* fotos addicionals per projecte: clau -> llista de fitxers a img/projectes/ */
   const MORE = {
+    sentiu: ['sentiu-1.jpg'],
     vetlles: ['vetlles-1.jpg', 'vetlles-2.jpg', 'vetlles-3.jpg', 'vetlles-4.jpg'],
     clotats: ['clotats-1.jpg', 'clotats-2.jpg', 'clotats-3.jpg', 'clotats-4.jpg', 'clotats-5.jpg', 'clotats-6.jpg']
   };
