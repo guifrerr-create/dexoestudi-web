@@ -97,6 +97,18 @@
         tile.classList.add('on'); tile.setAttribute('aria-expanded', 'true'); tile.setAttribute('aria-controls', 'xp');
         x.querySelector('.xp-x').addEventListener('click', () => { closeX(); openI = null; tile.focus(); });
         x.querySelectorAll('.xp-ph').forEach((b) => b.addEventListener('click', () => openLb({ ...p, src: p.photos[+b.dataset.k] }, b)));
+        /* barra de desplaçament minimalista + arrossegar amb el ratolí */
+        const row = x.querySelector('.xp-row');
+        const bar = document.createElement('div'); bar.className = 'xp-bar'; bar.innerHTML = '<span></span>';
+        row.after(bar); const th = bar.firstChild;
+        const upd = () => { const r = row.clientWidth / row.scrollWidth; bar.hidden = r >= 0.999; th.style.width = (r * 100) + '%'; th.style.transform = `translateX(${(row.scrollLeft / Math.max(1, row.scrollWidth - row.clientWidth)) * (1 / r - 1) * 100}%)`; };
+        row.addEventListener('scroll', upd, { passive: true }); row.querySelectorAll('img').forEach((im) => im.addEventListener('load', upd)); setTimeout(upd, 60);
+        let dr = null, moved = false;
+        row.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; dr = { x: e.clientX, l: row.scrollLeft }; moved = false; row.classList.add('drag'); });
+        addEventListener('pointermove', (e) => { if (!dr) return; const dx = e.clientX - dr.x; if (Math.abs(dx) > 4) moved = true; row.scrollLeft = dr.l - dx; });
+        addEventListener('pointerup', () => { dr = null; row.classList.remove('drag'); });
+        row.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+        row.addEventListener('wheel', (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && row.scrollWidth > row.clientWidth) { e.preventDefault(); row.scrollLeft += e.deltaY; } }, { passive: false });
         requestAnimationFrame(() => x.classList.add('open'));
         setTimeout(() => x.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' }), 320);
       };

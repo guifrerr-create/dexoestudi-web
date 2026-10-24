@@ -269,3 +269,13 @@ form.cform{grid-column:auto;padding:20px;gap:10px}
 .xp-ph img{height:100%;width:auto;display:block}
 .xp-ph{height:min(210px,30vw)}
 .xp-ph{height:min(105px,18vw)}
+
+/* barra de desplaçament minimalista */
+.xp-row{scrollbar-width:none;padding-bottom:10px;scroll-snap-type:none;cursor:grab}
+.xp-row::-webkit-scrollbar{display:none}
+.xp-row.drag{cursor:grabbing;user-select:none}
+.xp-row.drag .xp-ph{pointer-events:none}
+.xp-bar{position:relative;height:2px;margin:0 4px 16px;background:#e6e6e3;border-radius:2px;overflow:hidden;transition:height .2s}
+.xp-bar span{display:block;height:100%;background:var(--ink);border-radius:2px;transition:transform .15s linear,width .3s}
+.xp:hover .xp-bar{height:3px}
+.xp-bar[hidden]{display:none}
