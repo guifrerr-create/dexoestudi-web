@@ -153,18 +153,11 @@
       const fd = new FormData(cf);
       btn.disabled = true; cf.classList.add('sending');
       msgBox.hidden = false; msgBox.className = 'cf-msg'; msgBox.textContent = 'Enviant…';
-      const key = cf.dataset.key;
       try {
-        let ok = false;
-        if (key) {
-          const body = { access_key: key, subject: 'Nou missatge del web dexo', from_name: 'Web dexo', replyto: fd.get('correu'), nom: fd.get('nom'), correu: fd.get('correu'), telefon: fd.get('telefon'), municipi: fd.get('municipi'), missatge: fd.get('missatge') };
-          const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) });
-          ok = r.ok && (await r.json()).success;
-        } else {
-          fd.delete('_next');
-          const r = await fetch('https://formsubmit.co/ajax/info@dexoestudi.com', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
-          ok = r.ok && String((await r.json()).success) === 'true';
-        }
+        const body = new URLSearchParams();
+        ['nom', 'correu', 'telefon', 'municipi', 'missatge', '_honey'].forEach((k) => body.append(k, fd.get(k) || ''));
+        const r = await fetch(cf.action, { method: 'POST', body });
+        const ok = r.ok && (await r.json()).success === true;
         if (!ok) throw new Error('send');
         location.href = 'gracies.html';
       } catch (err) {
