@@ -33,6 +33,7 @@
   ].map(([title, type, place, cats, img]) => ({ title, type, place, cats, key: img, src: 'img/projectes/' + img + '.jpg' }));
   /* fotos addicionals per projecte: clau -> llista de fitxers a img/projectes/ */
   const MORE = {
+    'palau-marc': ['palau-marc-1.jpg', 'palau-marc-2.jpg'],
     sentiu: ['sentiu-2.jpg', 'sentiu-3.jpg', 'sentiu-4.jpg', 'sentiu-5.jpg', 'sentiu-6.jpg', 'sentiu-7.jpg', 'sentiu-8.jpg', 'sentiu-9.jpg', 'sentiu-10.jpg', 'sentiu-11.jpg'],
     'gerb-unifamiliar': ['gerb-1.jpg', 'gerb-3.jpg', 'gerb-4.jpg', 'gerb-5.jpg', 'gerb-6.jpg', 'gerb-7.jpg', 'gerb-8.jpg', 'gerb-9.jpg', 'gerb-10.jpg'],
     vetlles: ['vetlles-1.jpg', 'vetlles-2.jpg', 'vetlles-3.jpg', 'vetlles-4.jpg'],
