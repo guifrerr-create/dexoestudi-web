@@ -283,3 +283,13 @@ form.cform{grid-column:auto;padding:20px;gap:10px}
 .xp-row{padding-top:14px}
 .xp-bar{margin-bottom:0}
 .xp-h{padding:10px 4px 18px}
+
+/* Estudi: quatre quadres iguals */
+.studio-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.studio-row>*{flex:none;width:auto;max-width:none;height:auto;aspect-ratio:4/5;min-height:0}
+.studio-row .portrait{grid-template-rows:minmax(0,1fr) auto}
+.studio-row .cred,.studio-row .social-card{height:auto}
+.cred-bim img{max-width:100%}
+.cred h3{font-size:17px}
+@media (max-width:1000px){.studio-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.studio-row{grid-template-columns:1fr}.studio-row>*{aspect-ratio:auto;min-height:260px}}
