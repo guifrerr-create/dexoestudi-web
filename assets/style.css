@@ -255,3 +255,15 @@ form.cform{grid-column:auto;padding:20px;gap:10px}
 .cred h3{font-size:19px;line-height:1.25}
 .cred svg{width:26px;height:26px}
 .cred-bim img{opacity:.75}
+
+/* fila desplegable amb les fotos del projecte (inici) */
+.tile.on{outline:2px solid var(--ink);outline-offset:2px}
+.xp{grid-column:1/-1;display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1)}
+.xp.open{grid-template-rows:1fr}
+.xp-in{overflow:hidden;min-height:0}
+.xp-h{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 4px 12px}
+.xp-h b{display:block;font-size:18px;font-weight:600}
+.xp-h small{font-size:14px;color:var(--mute)}
+.xp-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:14px;scroll-snap-type:x mandatory}
+.xp-ph{flex:0 0 auto;height:min(420px,60vw);padding:0;border:0;border-radius:4px;overflow:hidden;background:#e7e6e2;cursor:zoom-in;scroll-snap-align:start}
+.xp-ph img{height:100%;width:auto;display:block}

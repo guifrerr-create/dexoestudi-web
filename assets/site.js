@@ -29,7 +29,10 @@
     ['Bar Las Vegas', 'Reforma de local per a bar', 'Balaguer', [R, A], 'lasvegas'],
     ['Bar Lo Tardeo', 'Reforma de local per a bar', 'Balaguer', [R, A], 'lotardeo'],
     ['Racó Ibèric', 'Reforma de local comercial', 'Balaguer', [R, A], 'raco-iberic'],
-  ].map(([title, type, place, cats, img]) => ({ title, type, place, cats, src: 'img/projectes/' + img + '.jpg' }));
+  ].map(([title, type, place, cats, img]) => ({ title, type, place, cats, key: img, src: 'img/projectes/' + img + '.jpg' }));
+  /* fotos addicionals per projecte: clau -> llista de fitxers a img/projectes/ */
+  const MORE = {};
+  P.forEach((p) => { p.photos = [p.src].concat((MORE[p.key] || []).map((f) => 'img/projectes/' + f)); });
   const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -79,9 +82,27 @@
       const more = document.getElementById('more');
       let rows = +grid.dataset.rows;
       const cols = () => Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(' ').length);
+      let openI = null;
+      const closeX = () => { const old = grid.querySelector('.xp'); if (old) old.remove(); grid.querySelectorAll('.tile.on').forEach((t) => { t.classList.remove('on'); t.setAttribute('aria-expanded', 'false'); }); };
+      const expand = (i, tile) => {
+        if (openI === i) { closeX(); openI = null; return; }
+        closeX(); openI = i;
+        const p = P[i], c = cols(), tiles = [...grid.querySelectorAll('.tile')];
+        const end = Math.min(Math.floor(i / c) * c + c - 1, tiles.length - 1);
+        const x = document.createElement('div'); x.className = 'xp'; x.id = 'xp';
+        x.innerHTML = `<div class="xp-in"><div class="xp-h"><div><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></div><button type="button" class="iconbtn xp-x" aria-label="Tanca les fotos del projecte">×</button></div><div class="xp-row">${p.photos.map((src, k) => `<button type="button" class="xp-ph" data-k="${k}" aria-label="Amplia la foto ${k + 1} de ${esc(p.title)}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div></div>`;
+        tiles[end].after(x);
+        tile.classList.add('on'); tile.setAttribute('aria-expanded', 'true'); tile.setAttribute('aria-controls', 'xp');
+        x.querySelector('.xp-x').addEventListener('click', () => { closeX(); openI = null; tile.focus(); });
+        x.querySelectorAll('.xp-ph').forEach((b) => b.addEventListener('click', () => openLb({ ...p, src: p.photos[+b.dataset.k] }, b)));
+        requestAnimationFrame(() => x.classList.add('open'));
+        setTimeout(() => x.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' }), 320);
+      };
       const drawHome = () => {
         const n = Math.min(P.length, rows * cols());
-        renderGrid(P.slice(0, n));
+        openI = null;
+        grid.innerHTML = P.slice(0, n).map((p, i) => `<button type="button" class="tile" data-i="${i}" aria-expanded="false" aria-label="Mostra les fotos de ${esc(p.title)}, ${esc(p.type)}, ${esc(p.place)}"><img src="${p.src}" alt="" loading="lazy" decoding="async"><span class="veil"><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`).join('');
+        grid.querySelectorAll('.tile').forEach((t) => t.addEventListener('click', () => expand(+t.dataset.i, t)));
         if (more) more.parentElement.hidden = n >= P.length;
       };
       if (more) more.addEventListener('click', () => { rows += 4; drawHome(); });
