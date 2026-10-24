@@ -60,13 +60,45 @@
   const closeLb = () => { lb.classList.remove('open'); document.body.style.overflow = ''; if (last) last.focus(); };
   if (lb) { lb.addEventListener('click', closeLb); addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); }); }
 
-  /* graella de projectes */
+  /* graella de projectes: clic -> fila amb les fotos del projecte */
   const grid = document.getElementById('grid');
+  let cur = [];
+  const cols = () => Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(' ').length);
+  let openI = null;
+  const closeX = () => { const old = grid.querySelector('.xp'); if (old) old.remove(); grid.querySelectorAll('.tile.on').forEach((t) => { t.classList.remove('on'); t.setAttribute('aria-expanded', 'false'); }); };
+  const expand = (i, tile) => {
+    if (openI === i) { closeX(); openI = null; return; }
+    closeX(); openI = i;
+    const p = cur[i], c = cols(), tiles = [...grid.querySelectorAll('.tile')];
+    const end = Math.min(Math.floor(i / c) * c + c - 1, tiles.length - 1);
+    const x = document.createElement('div'); x.className = 'xp'; x.id = 'xp';
+    x.innerHTML = `<div class="xp-in"><div class="xp-h"><div><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></div><button type="button" class="iconbtn xp-x" aria-label="Tanca les fotos del projecte">×</button></div><div class="xp-row">${p.photos.map((src, k) => `<button type="button" class="xp-ph" data-k="${k}" aria-label="Amplia la foto ${k + 1} de ${esc(p.title)}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div></div>`;
+    tiles[end].after(x);
+    tile.classList.add('on'); tile.setAttribute('aria-expanded', 'true'); tile.setAttribute('aria-controls', 'xp');
+    x.querySelector('.xp-x').addEventListener('click', () => { closeX(); openI = null; tile.focus(); });
+    x.querySelectorAll('.xp-ph').forEach((b) => b.addEventListener('click', () => openLb({ ...p, src: p.photos[+b.dataset.k] }, b)));
+    /* barra de desplaçament minimalista + arrossegar amb el ratolí */
+    const row = x.querySelector('.xp-row');
+    const bar = document.createElement('div'); bar.className = 'xp-bar'; bar.innerHTML = '<span></span>';
+    row.after(bar); const th = bar.firstChild;
+    const upd = () => { const r = row.clientWidth / row.scrollWidth; bar.hidden = r >= 0.999; th.style.width = (r * 100) + '%'; th.style.transform = `translateX(${(row.scrollLeft / Math.max(1, row.scrollWidth - row.clientWidth)) * (1 / r - 1) * 100}%)`; };
+    row.addEventListener('scroll', upd, { passive: true }); row.querySelectorAll('img').forEach((im) => im.addEventListener('load', upd)); setTimeout(upd, 60);
+    let dr = null, moved = false;
+    row.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; dr = { x: e.clientX, l: row.scrollLeft }; moved = false; row.classList.add('drag'); });
+    addEventListener('pointermove', (e) => { if (!dr) return; const dx = e.clientX - dr.x; if (Math.abs(dx) > 4) moved = true; row.scrollLeft = dr.l - dx; });
+    addEventListener('pointerup', () => { dr = null; row.classList.remove('drag'); });
+    row.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+    row.addEventListener('wheel', (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && row.scrollWidth > row.clientWidth) { e.preventDefault(); row.scrollLeft += e.deltaY; } }, { passive: false });
+    requestAnimationFrame(() => x.classList.add('open'));
+    setTimeout(() => x.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' }), 320);
+  };
   const renderGrid = (list) => {
-    grid.innerHTML = list.map((p, i) => `<button type="button" class="tile" data-i="${i}" aria-label="Amplia ${esc(p.title)}, ${esc(p.type)}, ${esc(p.place)}"><img src="${p.src}" alt="" loading="lazy" decoding="async"><span class="veil"><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`).join('');
-    grid.querySelectorAll('.tile').forEach((t) => t.addEventListener('click', () => openLb(list[+t.dataset.i], t)));
+    cur = list; openI = null;
+    grid.innerHTML = list.map((p, i) => `<button type="button" class="tile" data-i="${i}" aria-expanded="false" aria-label="Mostra les fotos de ${esc(p.title)}, ${esc(p.type)}, ${esc(p.place)}"><img src="${p.src}" alt="" loading="lazy" decoding="async"><span class="veil"><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`).join('');
+    grid.querySelectorAll('.tile').forEach((t) => t.addEventListener('click', () => expand(+t.dataset.i, t)));
   };
   if (grid) {
+    let rt0; addEventListener('resize', () => { clearTimeout(rt0); rt0 = setTimeout(() => { if (openI !== null) { const i = openI; const t = grid.querySelectorAll('.tile')[i]; closeX(); openI = null; if (t) expand(i, t); } }, 200); });
     const filters = document.getElementById('filters');
     if (filters) {
       const cats = ['Tots', H, R, E, A, D];
@@ -84,44 +116,13 @@
     } else if (grid.dataset.rows) {
       const more = document.getElementById('more');
       let rows = +grid.dataset.rows;
-      const cols = () => Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(' ').length);
-      let openI = null;
-      const closeX = () => { const old = grid.querySelector('.xp'); if (old) old.remove(); grid.querySelectorAll('.tile.on').forEach((t) => { t.classList.remove('on'); t.setAttribute('aria-expanded', 'false'); }); };
-      const expand = (i, tile) => {
-        if (openI === i) { closeX(); openI = null; return; }
-        closeX(); openI = i;
-        const p = P[i], c = cols(), tiles = [...grid.querySelectorAll('.tile')];
-        const end = Math.min(Math.floor(i / c) * c + c - 1, tiles.length - 1);
-        const x = document.createElement('div'); x.className = 'xp'; x.id = 'xp';
-        x.innerHTML = `<div class="xp-in"><div class="xp-h"><div><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></div><button type="button" class="iconbtn xp-x" aria-label="Tanca les fotos del projecte">×</button></div><div class="xp-row">${p.photos.map((src, k) => `<button type="button" class="xp-ph" data-k="${k}" aria-label="Amplia la foto ${k + 1} de ${esc(p.title)}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div></div>`;
-        tiles[end].after(x);
-        tile.classList.add('on'); tile.setAttribute('aria-expanded', 'true'); tile.setAttribute('aria-controls', 'xp');
-        x.querySelector('.xp-x').addEventListener('click', () => { closeX(); openI = null; tile.focus(); });
-        x.querySelectorAll('.xp-ph').forEach((b) => b.addEventListener('click', () => openLb({ ...p, src: p.photos[+b.dataset.k] }, b)));
-        /* barra de desplaçament minimalista + arrossegar amb el ratolí */
-        const row = x.querySelector('.xp-row');
-        const bar = document.createElement('div'); bar.className = 'xp-bar'; bar.innerHTML = '<span></span>';
-        row.after(bar); const th = bar.firstChild;
-        const upd = () => { const r = row.clientWidth / row.scrollWidth; bar.hidden = r >= 0.999; th.style.width = (r * 100) + '%'; th.style.transform = `translateX(${(row.scrollLeft / Math.max(1, row.scrollWidth - row.clientWidth)) * (1 / r - 1) * 100}%)`; };
-        row.addEventListener('scroll', upd, { passive: true }); row.querySelectorAll('img').forEach((im) => im.addEventListener('load', upd)); setTimeout(upd, 60);
-        let dr = null, moved = false;
-        row.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; dr = { x: e.clientX, l: row.scrollLeft }; moved = false; row.classList.add('drag'); });
-        addEventListener('pointermove', (e) => { if (!dr) return; const dx = e.clientX - dr.x; if (Math.abs(dx) > 4) moved = true; row.scrollLeft = dr.l - dx; });
-        addEventListener('pointerup', () => { dr = null; row.classList.remove('drag'); });
-        row.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
-        row.addEventListener('wheel', (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && row.scrollWidth > row.clientWidth) { e.preventDefault(); row.scrollLeft += e.deltaY; } }, { passive: false });
-        requestAnimationFrame(() => x.classList.add('open'));
-        setTimeout(() => x.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' }), 320);
-      };
       const drawHome = () => {
         const n = Math.min(P.length, rows * cols());
-        openI = null;
-        grid.innerHTML = P.slice(0, n).map((p, i) => `<button type="button" class="tile" data-i="${i}" aria-expanded="false" aria-label="Mostra les fotos de ${esc(p.title)}, ${esc(p.type)}, ${esc(p.place)}"><img src="${p.src}" alt="" loading="lazy" decoding="async"><span class="veil"><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`).join('');
-        grid.querySelectorAll('.tile').forEach((t) => t.addEventListener('click', () => expand(+t.dataset.i, t)));
+        renderGrid(P.slice(0, n));
         if (more) more.parentElement.hidden = n >= P.length;
       };
       if (more) more.addEventListener('click', () => { rows += 4; drawHome(); });
-      let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(drawHome, 150); });
+      let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (openI === null) drawHome(); }, 150); });
       drawHome();
     } else renderGrid(P);
   }
