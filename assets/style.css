@@ -436,3 +436,4 @@ form.cform.sending button[type=submit]{opacity:.5;pointer-events:none}
 @media (max-width:700px){.award{grid-template-columns:1fr auto;gap:12px 16px;padding:22px 12px}.aw-rank{min-width:0}.aw-rank b{font-size:52px}.aw-link{grid-column:2;grid-row:1;width:42px;height:42px}.aw-main{grid-column:1/-1}.aw-year{grid-column:1/-1;font-size:14px}}
 @media (max-width:760px){header.top nav{font-size:14px;gap:12px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;white-space:nowrap}header.top nav::-webkit-scrollbar{display:none}header.top nav a{flex:0 0 auto}}
 @media (max-width:360px){header.top nav{justify-content:flex-start;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}}
+.aw-none{visibility:hidden}

@@ -303,21 +303,21 @@
 
     /* intents per paraules clau */
     const INT = [
-      ['preu', /\b(preu|preus|cost|costa|costaria|quant|pressupost|presupuesto|precio|tarifa|honoraris|euros?)\b/],
-      ['contacte', /\b(contacte|contactar|telefon|trucar|correu|email|mail|whatsapp|parlar|llamar|telefono)\b/],
-      ['on', /\b(on sou|adreca|direccio de l estudi|ubicacio|mapa|com arribar|on esta|donde)\b/],
-      ['zona', /\b(zona|on treballeu|treballeu a|comarca|comarques|lleida|noguera|fora de balaguer)\b/],
-      ['deo', /\b(direccio d execucio|direccio de l obra|deo|direccio facultativa|aparellador|arquitecte tecnic|seguiment d obra|certificacio)\b/],
-      ['ss', /\b(seguretat|salut|coordinacio|plomada|pla de seguretat|ess|ebss)\b/],
-      ['llicencia', /\b(llicencia|licencia|permis|permisos|comunicacio previa|ajuntament|tramit|tramits)\b/],
-      ['qui', /\b(qui sou|qui es|guifre|arquitecte|fundador|estudi dexo|dexo es|equip)\b/],
-      ['serveis', /\b(servei|serveis|que feu|que fas|ofereix|oferiu|interiorisme|bim|pau|autoproteccio|projecte basic|projecte executiu)\b/],
-      ['reforma', /\b(reforma|reformar|rehabilitar|rehabilitacio|reformes|obra nova|ampliacio)\b/],
-      ['projectes', /\b(projectes|obres|treballs|portafoli|exemples|fotos|feina feta)\b/],
-      ['gracies', /\b(gracies|merci|gracias|perfecte|genial|adeu|fins aviat)\b/],
-      ['hola', /^(hola|bon dia|bona tarda|bona nit|ei|hey|hello|buenas)\b/],
+      ['preu', /\b(preu|preus|cost|costa|costaria|quant|pressupost|presupuesto|precio|tarifa|honoraris|euros?|cuanto|cuesta|costaria|presupuestos|precios)\b/],
+      ['contacte', /\b(contacte|contactar|telefon|trucar|correu|email|mail|whatsapp|parlar|llamar|telefono|contacto|contactar|correo|hablar)\b/],
+      ['on', /\b(on sou|adreca|direccio de l estudi|ubicacio|mapa|com arribar|on esta|donde|direccion|ubicacion|como llegar)\b/],
+      ['zona', /\b(zona|on treballeu|treballeu a|comarca|comarques|lleida|noguera|fora de balaguer|donde trabajais|provincia)\b/],
+      ['deo', /\b(direccio d execucio|direccio de l obra|deo|direccio facultativa|aparellador|arquitecte tecnic|seguiment d obra|certificacio|direccion de obra|direccion de ejecucion|aparejador|arquitecto tecnico|certificacion)\b/],
+      ['ss', /\b(seguretat|salut|coordinacio|plomada|pla de seguretat|ess|ebss|seguridad|plan de seguridad|coordinacion)\b/],
+      ['llicencia', /\b(llicencia|licencia|permis|permisos|comunicacio previa|ajuntament|tramit|tramits|permiso|ayuntamiento|tramite|tramites)\b/],
+      ['qui', /\b(qui sou|qui es|guifre|arquitecte|fundador|estudi dexo|dexo es|equip|quien|quienes sois|arquitecto|equipo)\b/],
+      ['serveis', /\b(servei|serveis|que feu|que fas|ofereix|oferiu|interiorisme|bim|pau|autoproteccio|projecte basic|projecte executiu|servicio|servicios|que haceis|ofreceis|interiorismo|autoproteccion|proyecto basico)\b/],
+      ['reforma', /\b(reforma|reformar|rehabilitar|rehabilitacio|reformes|obra nova|ampliacio|rehabilitacion|reformas|obra nueva|ampliacion)\b/],
+      ['projectes', /\b(projectes|obres|treballs|portafoli|exemples|fotos|feina feta|proyectos|obras|trabajos|ejemplos)\b/],
+      ['gracies', /\b(gracies|merci|gracias|perfecte|genial|adeu|fins aviat|perfecto|adios|hasta luego)\b/],
+      ['hola', /^(hola|bon dia|bona tarda|bona nit|ei|hey|hello|buenas|buenos dias|buenas tardes)\b/],
     ];
-    const STOP = new Set(norm('de del dels la les el els un una uns unes i a al als en per amb que com hi ha teniu tens algun alguna algun projecte projectes obra obres fet fets feu fet vull veure ensenya ensenyam mostra mostram busco sobre on es reforma reformes local locals d de l habitatge').split(' '));
+    const STOP = new Set(norm('de del dels la les el els un una uns unes i a al als en per amb que com hi ha teniu tens algun alguna algun projecte projectes obra obres fet fets feu fet vull veure ensenya ensenyam mostra mostram busco sobre on es reforma reformes local locals d de l habitatge los las y con hay teneis tienes algunos proyecto proyectos obras hecho quiero ver ensename muestrame busco sobre donde vivienda reformas').split(' '));
     const findProjects = (t) => {
       const words = t.split(' ').filter((w) => w.length > 2 && !STOP.has(w));
       if (!words.length) return [];
