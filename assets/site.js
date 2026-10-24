@@ -182,12 +182,27 @@
     fab.setAttribute('aria-label', 'Obre l’assistent de dexo');
     const box = document.createElement('section');
     box.className = 'cb'; box.id = 'cb'; box.setAttribute('aria-label', 'Assistent de dexo'); box.hidden = true;
-    box.innerHTML = `<header class="cb-h"><div><b>dexo<i></i></b><small>Assistent de l’estudi</small></div><button type="button" class="cb-x" aria-label="Tanca l’assistent">${ICON}</button></header>
+    const PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+    const UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>';
+    const CHEV = '<svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>';
+    const TOPICS = [['Què feu?', 'serveis'], ['Veure projectes', 'projectes'], ['Demanar pressupost', 'budget'], ['Direcció d’execució', 'deo'], ['Seguretat i salut', 'ss'], ['Contacte', 'contacte'], ['On sou?', 'on']];
+    box.innerHTML = `<div class="cb-card"><header class="cb-h"><div class="cb-id"><span class="cb-av">d</span><div><b>dexo<i></i></b><small><span class="cb-on"></span>Assistent de l’estudi</small></div></div><button type="button" class="cb-x" aria-label="Tanca l’assistent">${ICON}</button></header>
       <div class="cb-log" role="log" aria-live="polite"></div>
       <div class="cb-chips"></div>
-      <form class="cb-in"><label class="sr" for="cb-q">Escriu la teva pregunta</label><input id="cb-q" type="text" autocomplete="off" placeholder="Escriu aquí…" maxlength="300"><button type="submit" aria-label="Envia">${SEND}</button></form>`;
+      <form class="cb-in">
+        <label class="sr" for="cb-q">Escriu la teva pregunta</label><textarea id="cb-q" rows="1" autocomplete="off" placeholder="Escriu la teva pregunta…" maxlength="300"></textarea>
+        <div class="cb-bar">
+          <div class="cb-tools">
+            <button type="button" class="cb-ib cb-more" aria-label="Temes" aria-haspopup="true" aria-expanded="false">${PLUS}</button>
+            <button type="button" class="cb-pill cb-bud">Pressupost ${CHEV}</button>
+          </div>
+          <button type="submit" class="cb-ib cb-send" aria-label="Envia" disabled>${UP}</button>
+        </div>
+        <div class="cb-pop" hidden><p>Temes</p>${TOPICS.map(([l, k]) => `<button type="button" data-k="${k}">${esc(l)}</button>`).join('')}</div>
+      </form></div>
+      <aside class="cb-promo"><span><b>Pressupost sense compromís.</b></span><button type="button" class="cb-go">Demana’l</button></aside>`;
     document.body.append(box, fab);
-    const log = box.querySelector('.cb-log'), chipsEl = box.querySelector('.cb-chips'), form = box.querySelector('.cb-in'), q = box.querySelector('#cb-q');
+    const log = box.querySelector('.cb-log'), chipsEl = box.querySelector('.cb-chips'), form = box.querySelector('.cb-in'), q = box.querySelector('#cb-q'), send = box.querySelector('.cb-send'), pop = box.querySelector('.cb-pop'), moreB = box.querySelector('.cb-more');
 
     const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
     const scroll = () => { log.scrollTop = log.scrollHeight; };
@@ -311,11 +326,25 @@
       for (const [k, re] of INT) if (re.test(t)) return answer(k);
       say('No t’he acabat d’entendre. Pots preguntar-me per <b>serveis</b>, <b>projectes</b> o <b>pressupost</b>, o escriure directament a l’estudi.', MENU());
     };
+    const fit = () => { q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 120) + 'px'; send.disabled = !q.value.trim(); };
+    q.addEventListener('input', fit);
+    q.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const v = q.value.trim(); if (!v) return;
-      add(esc(v), 'me'); q.value = ''; setChips([]); reply(v);
+      add(esc(v), 'me'); q.value = ''; fit(); setChips([]); togglePop(false); reply(v);
     });
+    const togglePop = (on) => { pop.hidden = !on; moreB.setAttribute('aria-expanded', String(on)); moreB.classList.toggle('on', on); };
+    moreB.addEventListener('click', () => togglePop(pop.hidden));
+    pop.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      togglePop(false); add(esc(b.textContent), 'me'); setChips([]);
+      b.dataset.k === 'budget' ? budget() : answer(b.dataset.k);
+    });
+    document.addEventListener('click', (e) => { if (!pop.hidden && !e.target.closest('.cb-pop, .cb-more')) togglePop(false); });
+    const startBudget = () => { if (flow) return; add('Demanar pressupost', 'me'); setChips([]); budget(); };
+    box.querySelector('.cb-bud').addEventListener('click', startBudget);
+    box.querySelector('.cb-go').addEventListener('click', startBudget);
 
     /* obrir / tancar */
     let started = false;
