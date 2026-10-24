@@ -72,7 +72,7 @@
     const p = cur[i], c = cols(), tiles = [...grid.querySelectorAll('.tile')];
     const end = Math.min(Math.floor(i / c) * c + c - 1, tiles.length - 1);
     const x = document.createElement('div'); x.className = 'xp'; x.id = 'xp';
-    x.innerHTML = `<div class="xp-in"><div class="xp-h"><div><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></div><button type="button" class="iconbtn xp-x" aria-label="Tanca les fotos del projecte">×</button></div><div class="xp-row">${p.photos.map((src, k) => `<button type="button" class="xp-ph" data-k="${k}" aria-label="Amplia la foto ${k + 1} de ${esc(p.title)}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div></div>`;
+    x.innerHTML = `<div class="xp-in"><div class="xp-row">${p.photos.map((src, k) => `<button type="button" class="xp-ph" data-k="${k}" aria-label="Amplia la foto ${k + 1} de ${esc(p.title)}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div><div class="xp-h"><div><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></div><button type="button" class="iconbtn xp-x" aria-label="Tanca les fotos del projecte">×</button></div></div>`;
     tiles[end].after(x);
     tile.classList.add('on'); tile.setAttribute('aria-expanded', 'true'); tile.setAttribute('aria-controls', 'xp');
     x.querySelector('.xp-x').addEventListener('click', () => { closeX(); openI = null; tile.focus(); });
