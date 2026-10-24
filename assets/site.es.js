@@ -7,7 +7,7 @@
     ['Reforma integral de vivienda', 'Reforma', 'Balaguer', [H, R], 'reforma-integral-habitatge'],
     ['Reforma interior de vivienda unifamiliar', 'Dirección de ejecución', 'Barcelona', [H, R, D], 'escala-barcelona'],
     ['Reforma de la masía els Clotats', 'Rehabilitación', 'Gerb, Os de Balaguer', [H, R], 'clotats'],
-    ['Rehabilitación de pequeña masía', 'Rehabilitación', 'Montargull', [H, R], 'masia-montargull', 2025],
+    ['Rehabilitación de pequeña masía', 'Rehabilitación', 'Montargull', [H, R], 'montargull', 2025],
     ['Sala de velatorio El Segre', 'Equipamiento', 'Balaguer', [E], 'vetlles'],
     ['Vivienda unifamiliar aislada', 'Dirección de ejecución y coordinación de seguridad y salud', 'Gerb, Os de Balaguer', [H, D], 'gerb-unifamiliar'],
     ['Centro de Servicios', 'Dirección de ejecución y coordinación de seguridad y salud', 'La Sentiu de Sió', [E, D], 'sentiu'],
@@ -49,7 +49,7 @@
     'llibreria-nobel': ['nobel-1.jpg', 'nobel-2.jpg', 'nobel-3.jpg'],
     'escola-dominical': ['escola-dominical-1.jpg', 'escola-dominical-2.jpg'],
     bugaderia: ['bugaderia-1.jpg', 'bugaderia-2.jpg', 'bugaderia-3.jpg', 'bugaderia-4.jpg'],
-    'masia-montargull': ['masia-montargull-1.jpg', 'masia-montargull-2.jpg', 'masia-montargull-3.jpg'],
+    montargull: ['masia-montargull-1.jpg', 'masia-montargull-2.jpg', 'masia-montargull-3.jpg'],
     entrada: ['entrada-1.jpg']
   };
   const big = (f) => f.replace('img/projectes/', 'img/projectes/w/').replace(/\.jpg$/, '.webp');
