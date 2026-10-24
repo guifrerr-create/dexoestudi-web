@@ -7,6 +7,7 @@
     ['Reforma integral d’habitatge', 'Reforma', 'Balaguer', [H, R], 'reforma-integral-habitatge'],
     ['Reforma interior d’habitatge unifamiliar', 'Direcció d’execució', 'Barcelona', [H, R, D], 'escala-barcelona'],
     ['Reforma de masia els Clotats', 'Rehabilitació', 'Gerb, Os de Balaguer', [H, R], 'clotats'],
+    ['Rehabilitació de petita masia', 'Rehabilitació', 'Montargull', [H, R], 'masia-montargull', 2025],
     ['Sala de vetlles el Segre', 'Equipament', 'Balaguer', [E], 'vetlles'],
     ['Habitatge unifamiliar aïllat', 'Direcció d’execució i coordinació de seguretat i salut', 'Gerb, Os de Balaguer', [H, D], 'gerb-unifamiliar'],
     ['Centre de Serveis', 'Direcció d’execució i coordinació de seguretat i salut', 'La Sentiu de Sió', [E, D], 'sentiu'],
@@ -36,7 +37,7 @@
     tagliatella: ['tagliatella-1.jpg', 'tagliatella-2.jpg', 'tagliatella-3.jpg', 'tagliatella-4.jpg', 'tagliatella-5.jpg', 'tagliatella-6.jpg', 'tagliatella-7.jpg', 'tagliatella-8.jpg', 'tagliatella-9.jpg', 'tagliatella-10.jpg', 'tagliatella-11.jpg'],
     'pis-balaguer': ['pis-balaguer-1.jpg', 'pis-balaguer-2.jpg', 'pis-balaguer-3.jpg', 'pis-balaguer-4.jpg', 'pis-balaguer-5.jpg', 'pis-balaguer-6.jpg'],
     plurifamiliar: ['plurifamiliar-1.jpg', 'plurifamiliar-2.jpg'],
-    tartareu: ['tartareu-1.jpg', 'tartareu-2.jpg', 'tartareu-3.jpg', 'tartareu-4.jpg'],
+    tartareu: ['tartareu-1.jpg', 'tartareu-2.jpg', 'tartareu-3.jpg', 'tartareu-4.jpg', 'tartareu-7.jpg', 'tartareu-8.jpg', 'tartareu-9.jpg'],
     'mitgeres-historic': ['mitgeres-historic-1.jpg', 'mitgeres-historic-2.jpg', 'mitgeres-historic-3.jpg'],
     'escala-barcelona': ['barcelona-1.jpg', 'barcelona-2.jpg', 'barcelona-3.jpg', 'barcelona-4.jpg', 'barcelona-5.jpg', 'barcelona-6.jpg', 'barcelona-7.jpg', 'barcelona-8.jpg', 'barcelona-9.jpg', 'barcelona-10.jpg', 'barcelona-11.jpg', 'barcelona-12.jpg'],
     'palau-marc': ['palau-marc-1.jpg', 'palau-marc-2.jpg', 'palau-marc-3.jpg', 'palau-marc-4.jpg'],
@@ -47,7 +48,9 @@
     'raco-iberic': ['raco-iberic-1.jpg', 'raco-iberic-2.jpg', 'raco-iberic-3.jpg', 'raco-iberic-4.jpg'],
     'llibreria-nobel': ['nobel-1.jpg', 'nobel-2.jpg', 'nobel-3.jpg'],
     'escola-dominical': ['escola-dominical-1.jpg', 'escola-dominical-2.jpg'],
-    bugaderia: ['bugaderia-1.jpg', 'bugaderia-2.jpg', 'bugaderia-3.jpg', 'bugaderia-4.jpg']
+    bugaderia: ['bugaderia-1.jpg', 'bugaderia-2.jpg', 'bugaderia-3.jpg', 'bugaderia-4.jpg'],
+    'masia-montargull': ['masia-montargull-1.jpg', 'masia-montargull-2.jpg', 'masia-montargull-3.jpg'],
+    entrada: ['entrada-1.jpg']
   };
   const big = (f) => f.replace('img/projectes/', 'img/projectes/w/').replace(/\.jpg$/, '.webp');
   const thumb = (f) => f.replace('img/projectes/', 'img/projectes/t/').replace(/\.jpg$/, '.webp');
