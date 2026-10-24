@@ -42,6 +42,8 @@
     'raco-iberic': ['raco-iberic-1.jpg', 'raco-iberic-2.jpg', 'raco-iberic-3.jpg', 'raco-iberic-4.jpg'],
     'llibreria-nobel': ['nobel-1.jpg', 'nobel-2.jpg', 'nobel-3.jpg']
   };
+  const big = (f) => f.replace('img/projectes/', 'img/projectes/w/').replace(/\.jpg$/, '.webp');
+  const thumb = (f) => f.replace('img/projectes/', 'img/projectes/t/').replace(/\.jpg$/, '.webp');
   P.forEach((p) => { p.photos = [p.src].concat((MORE[p.key] || []).map((f) => 'img/projectes/' + f)); });
   const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -59,7 +61,7 @@
   let last = null;
   const openLb = (p, from) => {
     last = from;
-    lb.querySelector('img').src = p.src; lb.querySelector('img').alt = p.title;
+    lb.querySelector('img').src = big(p.src); lb.querySelector('img').alt = p.title;
     lb.querySelector('b').textContent = p.title;
     lb.querySelector('small').textContent = p.type + ' · ' + p.place;
     lb.classList.add('open'); document.body.style.overflow = 'hidden'; lb.querySelector('.x').focus();
@@ -80,7 +82,7 @@
     const p = cur[i], c = cols(), tiles = [...grid.querySelectorAll('.tile')];
     const end = Math.min(Math.floor(i / c) * c + c - 1, tiles.length - 1);
     const x = document.createElement('div'); x.className = 'xp'; x.id = 'xp';
-    x.innerHTML = `<div class="xp-in"><div class="xp-row">${p.photos.map((src, k) => `<button type="button" class="xp-ph" data-k="${k}" aria-label="Amplia la foto ${k + 1} de ${esc(p.title)}"><img src="${src}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div><div class="xp-h"><div><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></div><button type="button" class="iconbtn xp-x" aria-label="Tanca les fotos del projecte">×</button></div></div>`;
+    x.innerHTML = `<div class="xp-in"><div class="xp-row">${p.photos.map((src, k) => `<button type="button" class="xp-ph" data-k="${k}" aria-label="Amplia la foto ${k + 1} de ${esc(p.title)}"><img src="${thumb(src)}" alt="" loading="lazy" decoding="async"></button>`).join('')}</div><div class="xp-h"><div><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></div><button type="button" class="iconbtn xp-x" aria-label="Tanca les fotos del projecte">×</button></div></div>`;
     tiles[end].after(x);
     tile.classList.add('on'); tile.setAttribute('aria-expanded', 'true'); tile.setAttribute('aria-controls', 'xp');
     x.querySelector('.xp-x').addEventListener('click', () => { closeX(); openI = null; tile.focus(); });
@@ -92,8 +94,8 @@
     const upd = () => { const r = row.clientWidth / row.scrollWidth; bar.hidden = r >= 0.999; th.style.width = (r * 100) + '%'; th.style.transform = `translateX(${(row.scrollLeft / Math.max(1, row.scrollWidth - row.clientWidth)) * (1 / r - 1) * 100}%)`; };
     row.addEventListener('scroll', upd, { passive: true }); row.querySelectorAll('img').forEach((im) => im.addEventListener('load', upd)); setTimeout(upd, 60);
     let dr = null, moved = false;
-    row.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; dr = { x: e.clientX, l: row.scrollLeft }; moved = false; row.classList.add('drag'); });
-    addEventListener('pointermove', (e) => { if (!dr) return; const dx = e.clientX - dr.x; if (Math.abs(dx) > 4) moved = true; row.scrollLeft = dr.l - dx; });
+    row.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; dr = { x: e.clientX, l: row.scrollLeft }; moved = false; });
+    addEventListener('pointermove', (e) => { if (!dr) return; const dx = e.clientX - dr.x; if (Math.abs(dx) > 4 && !moved) { moved = true; row.classList.add('drag'); } row.scrollLeft = dr.l - dx; });
     addEventListener('pointerup', () => { dr = null; row.classList.remove('drag'); });
     row.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
     row.addEventListener('wheel', (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && row.scrollWidth > row.clientWidth) { e.preventDefault(); row.scrollLeft += e.deltaY; } }, { passive: false });
@@ -102,7 +104,7 @@
   };
   const renderGrid = (list) => {
     cur = list; openI = null;
-    grid.innerHTML = list.map((p, i) => `<button type="button" class="tile" data-i="${i}" aria-expanded="false" aria-label="Mostra les fotos de ${esc(p.title)}, ${esc(p.type)}, ${esc(p.place)}"><img src="${p.src}" alt="" loading="lazy" decoding="async"><span class="veil"><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`).join('');
+    grid.innerHTML = list.map((p, i) => `<button type="button" class="tile" data-i="${i}" aria-expanded="false" aria-label="Mostra les fotos de ${esc(p.title)}, ${esc(p.type)}, ${esc(p.place)}"><img src="${thumb(p.src)}" alt="" loading="lazy" decoding="async"><span class="veil"><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`).join('');
     grid.querySelectorAll('.tile').forEach((t) => t.addEventListener('click', () => expand(+t.dataset.i, t)));
   };
   if (grid) {
@@ -137,6 +139,16 @@
     let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (openI === null) drawGrid(); }, 150); });
     drawGrid();
   }
+
+  /* mapa: només es carrega quan el visitant ho demana (galetes de Google) */
+  document.querySelectorAll('.map-off').forEach((m) => {
+    m.querySelector('.map-load').addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.title = 'Mapa de l’estudi dexo a Balaguer'; f.src = m.dataset.src.replace(/&amp;/g, '&');
+      f.referrerPolicy = 'no-referrer-when-downgrade'; f.allowFullscreen = true;
+      m.classList.remove('map-off'); m.innerHTML = ''; m.append(f); f.focus();
+    });
+  });
 
   /* portada: Som + paraula */
   const word = document.getElementById('word');
@@ -229,7 +241,7 @@
 
     /* accions */
     const go = (fn) => { if (home) fn(); else location.href = 'index.html#projectes'; };
-    const projCard = (p) => `<button type="button" class="cb-p" data-k="${p.key}"><img src="${p.src}" alt="" loading="lazy"><span><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`;
+    const projCard = (p) => `<button type="button" class="cb-p" data-k="${p.key}"><img src="${thumb(p.src)}" alt="" loading="lazy"><span><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`;
     log.addEventListener('click', (e) => {
       const b = e.target.closest('.cb-p'); if (!b) return;
       if (matchMedia('(max-width:600px)').matches) closeBox();

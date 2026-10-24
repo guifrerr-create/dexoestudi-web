@@ -399,3 +399,18 @@ form.cform{grid-column:auto;padding:20px;gap:10px}
 a.soc-i.lg:hover{background:var(--ink);color:#fff}
 .cred-bim img,.cred-pau img{object-fit:contain;object-position:left center}.cred-bim img{height:58px;max-height:none}.cred-pau img{height:64px;max-height:none}
 .cred-bim img{height:68px}
+
+/* mapa amb consentiment */
+.map-off{position:relative;display:flex;align-items:flex-end;background:#ecebe7}
+.map-art{position:absolute;inset:0;width:100%;height:100%}
+.map-pin{position:absolute;left:50%;top:42%;transform:translate(-50%,-100%);width:44px;height:44px;color:var(--ink);filter:drop-shadow(0 6px 8px rgba(0,0,0,.18));animation:pinIn .6s cubic-bezier(.34,1.56,.64,1) both}
+.map-pin svg{width:100%;height:100%}
+@keyframes pinIn{from{opacity:0;transform:translate(-50%,-140%)}to{opacity:1;transform:translate(-50%,-100%)}}
+.map-ui{position:relative;margin:16px;padding:16px 18px;border-radius:10px;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:grid;gap:10px;width:100%}
+.map-ui b{font-size:15px;font-weight:600}
+.map-btns{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.map-load{height:40px;padding:0 18px;border:0;border-radius:999px;background:var(--ink);color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:transform .2s}
+.map-load:hover{transform:translateY(-2px)}
+.map-btns a{font-size:14px;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.map-ui small{font-size:12px;color:var(--mute);line-height:1.4}
+.map-ui small a{text-decoration:underline}
