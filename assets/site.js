@@ -2,7 +2,7 @@
   const H = 'Habitatge', R = 'Rehabilitació i reforma', E = 'Equipaments', A = 'Activitats', D = 'Direcció d’execució';
   const P = [
     ['Rehabilitació integral d’edifici entre mitgeres', 'Rehabilitació', 'Centre històric de Balaguer', [H, R], 'mitgeres-historic'],
-    ['Restaurant La Tagliatella', 'Reforma de local per a restaurant', 'Balaguer', [R, A], 'tagliatella'],
+    ['Restaurant La Tagliatella', 'Reforma de local per a restaurant', 'Balaguer', [R, A], 'tagliatella', 2025],
     ['Sala d’actes del Palau Marc', 'Reforma per al Departament de Cultura', 'Barcelona', [R, E], 'palau-marc'],
     ['Reforma integral d’habitatge', 'Reforma', 'Balaguer', [H, R], 'reforma-integral-habitatge'],
     ['Reforma interior d’habitatge unifamiliar', 'Direcció d’execució', 'Barcelona', [H, R, D], 'escala-barcelona'],
@@ -30,12 +30,13 @@
     ['Bar Las Vegas', 'Reforma de local per a bar', 'Balaguer', [R, A], 'lasvegas'],
     ['Bar Lo Tardeo', 'Reforma de local per a bar', 'Balaguer', [R, A], 'lotardeo'],
     ['Racó Ibèric', 'Reforma de local comercial', 'Balaguer', [R, A], 'raco-iberic'],
-  ].map(([title, type, place, cats, img]) => ({ title, type, place, cats, key: img, src: 'img/projectes/' + img + '.jpg' }));
+  ].map(([title, type, place, cats, img, year]) => ({ title, type, place: year ? place + ' · ' + year : place, year, cats, key: img, src: 'img/projectes/' + img + '.jpg' }));
   /* fotos addicionals per projecte: clau -> llista de fitxers a img/projectes/ */
   const MORE = {
+    tagliatella: ['tagliatella-1.jpg', 'tagliatella-2.jpg', 'tagliatella-3.jpg', 'tagliatella-4.jpg', 'tagliatella-5.jpg', 'tagliatella-6.jpg', 'tagliatella-7.jpg', 'tagliatella-8.jpg', 'tagliatella-9.jpg', 'tagliatella-10.jpg', 'tagliatella-11.jpg'],
     'pis-balaguer': ['pis-balaguer-1.jpg', 'pis-balaguer-2.jpg', 'pis-balaguer-3.jpg', 'pis-balaguer-4.jpg', 'pis-balaguer-5.jpg', 'pis-balaguer-6.jpg'],
     plurifamiliar: ['plurifamiliar-1.jpg', 'plurifamiliar-2.jpg'],
-    tartareu: ['tartareu-1.jpg', 'tartareu-2.jpg', 'tartareu-3.jpg', 'tartareu-4.jpg', 'tartareu-6.jpg'],
+    tartareu: ['tartareu-1.jpg', 'tartareu-2.jpg', 'tartareu-3.jpg', 'tartareu-4.jpg'],
     'mitgeres-historic': ['mitgeres-historic-1.jpg', 'mitgeres-historic-2.jpg', 'mitgeres-historic-3.jpg'],
     'escala-barcelona': ['barcelona-1.jpg', 'barcelona-2.jpg', 'barcelona-3.jpg', 'barcelona-4.jpg', 'barcelona-5.jpg', 'barcelona-6.jpg', 'barcelona-7.jpg', 'barcelona-8.jpg', 'barcelona-9.jpg', 'barcelona-10.jpg', 'barcelona-11.jpg', 'barcelona-12.jpg'],
     'palau-marc': ['palau-marc-1.jpg', 'palau-marc-2.jpg'],
