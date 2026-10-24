@@ -67,6 +67,7 @@
   const closeLb = () => { lb.classList.remove('open'); document.body.style.overflow = ''; if (last) last.focus(); };
   if (lb) { lb.addEventListener('click', closeLb); addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); }); }
 
+  const api = {};
   /* graella de projectes: clic -> fila amb les fotos del projecte */
   const grid = document.getElementById('grid');
   let cur = [];
@@ -123,6 +124,15 @@
       filters.querySelectorAll('button').forEach((b, k) => b.addEventListener('click', () => { if (cat === cats[k]) return; cat = cats[k]; rows = ROWS; drawFilters(); drawGrid(); }));
     };
     if (filters) drawFilters();
+    api.cat = (c) => { cat = c; rows = ROWS; if (filters) drawFilters(); closeX(); drawGrid(); grid.parentElement.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); };
+    api.show = (key) => {
+      cat = 'Tots'; if (filters) drawFilters();
+      const idx = P.findIndex((p) => p.key === key); if (idx < 0) return;
+      if (ROWS) rows = Math.max(ROWS, Math.ceil((idx + 1) / cols()));
+      drawGrid();
+      const t = grid.querySelectorAll('.tile')[idx];
+      if (t) { t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => expand(idx, t), reduce ? 0 : 450); }
+    };
     if (more) more.addEventListener('click', () => { rows += 4; drawGrid(); });
     let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (openI === null) drawGrid(); }, 150); });
     drawGrid();
@@ -158,6 +168,172 @@
     document.getElementById('next').addEventListener('click', () => go(k + 1));
     if (!reduce) setInterval(() => go(k + 1), 4000);
   }
+
+  /* assistent: xat minimalista sense servidor */
+  (() => {
+    const home = !!document.getElementById('grid');
+    const norm = (t) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’'`]/g, ' ').replace(/[^a-z0-9@.+ ]/g, ' ').replace(/\s+/g, ' ').trim();
+    const ICON = '<svg class="ic-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><svg class="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    const SEND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+    const fab = document.createElement('button');
+    fab.type = 'button'; fab.className = 'cb-fab'; fab.setAttribute('aria-expanded', 'false'); fab.setAttribute('aria-controls', 'cb');
+    fab.innerHTML = ICON + '<span class="cb-lbl">Pregunta’ns</span>';
+    fab.setAttribute('aria-label', 'Obre l’assistent de dexo');
+    const box = document.createElement('section');
+    box.className = 'cb'; box.id = 'cb'; box.setAttribute('aria-label', 'Assistent de dexo'); box.hidden = true;
+    box.innerHTML = `<header class="cb-h"><div><b>dexo<i></i></b><small>Assistent de l’estudi</small></div><button type="button" class="cb-x" aria-label="Tanca l’assistent">${ICON}</button></header>
+      <div class="cb-log" role="log" aria-live="polite"></div>
+      <div class="cb-chips"></div>
+      <form class="cb-in"><label class="sr" for="cb-q">Escriu la teva pregunta</label><input id="cb-q" type="text" autocomplete="off" placeholder="Escriu aquí…" maxlength="300"><button type="submit" aria-label="Envia">${SEND}</button></form>`;
+    document.body.append(box, fab);
+    const log = box.querySelector('.cb-log'), chipsEl = box.querySelector('.cb-chips'), form = box.querySelector('.cb-in'), q = box.querySelector('#cb-q');
+
+    const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+    const scroll = () => { log.scrollTop = log.scrollHeight; };
+    const add = (html, who) => { const m = document.createElement('div'); m.className = 'cb-m ' + who; m.innerHTML = html; log.append(m); scroll(); return m; };
+    let busy = Promise.resolve();
+    const say = (html, chips) => {
+      busy = busy.then(async () => {
+        const t = add('<span class="cb-dots"><i></i><i></i><i></i></span>', 'bot typing');
+        await wait(Math.min(1100, 380 + html.replace(/<[^>]+>/g, '').length * 6));
+        t.classList.remove('typing'); t.innerHTML = html; scroll();
+        setChips(chips || []);
+      });
+      return busy;
+    };
+    const setChips = (list) => {
+      chipsEl.innerHTML = '';
+      list.forEach((c, i) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'cb-chip'; b.style.setProperty('--i', i); b.textContent = c[0];
+        b.addEventListener('click', () => { add(esc(c[0]), 'me'); setChips([]); c[1](); });
+        chipsEl.append(b);
+      });
+      scroll();
+    };
+
+    /* accions */
+    const go = (fn) => { if (home) fn(); else location.href = 'index.html#projectes'; };
+    const projCard = (p) => `<button type="button" class="cb-p" data-k="${p.key}"><img src="${p.src}" alt="" loading="lazy"><span><b>${esc(p.title)}</b><small>${esc(p.type)} · ${esc(p.place)}</small></span></button>`;
+    log.addEventListener('click', (e) => {
+      const b = e.target.closest('.cb-p'); if (!b) return;
+      if (matchMedia('(max-width:600px)').matches) closeBox();
+      go(() => api.show && api.show(b.dataset.k));
+    });
+    const CATS = [['Habitatge', H], ['Rehabilitació i reforma', R], ['Equipaments', E], ['Locals i activitats', A], ['Direcció d’execució', D]];
+    const showCat = (c) => { go(() => api.cat && api.cat(c)); };
+
+    const MENU = () => [
+      ['Què feu?', () => answer('serveis')],
+      ['Veure projectes', () => answer('projectes')],
+      ['Demanar pressupost', () => budget()],
+      ['Contacte', () => answer('contacte')],
+    ];
+    const A_ = {
+      hola: () => say('Hola! Sóc l’assistent de <b>dexo</b>. Et puc explicar què fem, ensenyar-te projectes o ajudar-te a demanar pressupost.', MENU()),
+      serveis: () => say('Fem <b>projectes d’arquitectura</b> (habitatge nou, reformes i rehabilitació), <b>interiorisme</b>, <b>direcció d’execució</b> d’obra i <b>coordinació de seguretat i salut</b>. També redactem plans d’autoprotecció (PAU) i treballem en BIM.', [['Direcció d’execució', () => answer('deo')], ['Veure projectes', () => answer('projectes')], ['Demanar pressupost', () => budget()]]),
+      projectes: () => say('Quin tipus de projecte t’interessa? També pots escriure una paraula, per exemple <i>masia</i>, <i>restaurant</i> o <i>Barcelona</i>.', CATS.map(([l, c]) => [l, () => { showCat(c); say(`Aquí els tens: t’he filtrat els projectes de <b>${esc(l.toLowerCase())}</b>. Clica’n un per veure’n les fotos.`, MENU()); }])),
+      preu: () => say('Cada encàrrec és diferent: depèn de la superfície, de l’abast de l’obra i de la fase en què et trobis. Explica’m què vols fer i et preparem un <b>pressupost sense compromís</b>.', [['Demanar pressupost', () => budget()], ['Contacte', () => answer('contacte')]]),
+      contacte: () => say('Pots trucar al <a href="tel:+34606750036">606 750 036</a>, escriure a <a href="mailto:info@dexoestudi.com">info@dexoestudi.com</a> o venir a l’estudi, al Ptge. Gaspar de Portolà, 1, 1r 1a, de Balaguer.', [['Demanar pressupost', () => budget()], ['On sou?', () => answer('on')]]),
+      on: () => say('Som al <b>Passatge Gaspar de Portolà, 1, 1r 1a, 25600 Balaguer</b>. <a href="https://www.google.com/maps/search/?api=1&query=Passatge+Gaspar+de+Portol%C3%A0+1+25600+Balaguer" target="_blank" rel="noopener">Obre el mapa ↗</a>. Si vens, avisa’ns abans per assegurar que hi som.', [['Contacte', () => answer('contacte')], ['On treballeu?', () => answer('zona')]]),
+      zona: () => say('L’estudi és a Balaguer i treballem sobretot a la Noguera i a les comarques de Lleida. També fem encàrrecs a Barcelona.', [['Veure projectes', () => answer('projectes')], ['Demanar pressupost', () => budget()]]),
+      deo: () => say('La <b>direcció d’execució</b> vetlla perquè l’obra es construeixi tal com diu el projecte: control de qualitat i de materials, amidaments, certificacions i seguiment del termini i del cost. Ho fem en habitatges, equipaments i locals.', [['Veure’n projectes', () => { showCat(D); say('T’he filtrat els projectes de direcció d’execució.', MENU()); }], ['Seguretat i salut', () => answer('ss')]]),
+      ss: () => say('Coordinem la <b>seguretat i salut</b> de les obres en fase de projecte i d’execució: estudis i plans, visites i seguiment. Ho fem també a través de <a href="https://plomada.cat" target="_blank" rel="noopener">Plomada SiS ↗</a>.', [['Demanar pressupost', () => budget()], ['Què més feu?', () => answer('serveis')]]),
+      llicencia: () => say('Redactem el projecte i la documentació per tramitar la <b>llicència d’obres</b> o la comunicació prèvia a l’Ajuntament, i en fem el seguiment fins que la tens.', [['Demanar pressupost', () => budget()], ['Contacte', () => answer('contacte')]]),
+      reforma: () => say('Fem reformes integrals i parcials d’habitatges i locals, i rehabilitacions d’edificis i masies: des de l’estat actual i el projecte fins a la direcció de l’obra.', [['Veure’n projectes', () => { showCat(R); say('T’he filtrat les rehabilitacions i reformes.', MENU()); }], ['Demanar pressupost', () => budget()]]),
+      qui: () => say('<b>dexo</b> és l’estudi d’arquitectura de <b>Guifré Ricart i Real</b>, a Balaguer des del 2011. És especialista en BIM i està acreditat per redactar plans d’autoprotecció (PAU).', [['Què feu?', () => answer('serveis')], ['Contacte', () => answer('contacte')]]),
+      gracies: () => say('A tu! Si necessites res més, aquí em tens.', MENU()),
+    };
+    const answer = (k) => A_[k]();
+
+    /* intents per paraules clau */
+    const INT = [
+      ['preu', /\b(preu|preus|cost|costa|costaria|quant|pressupost|presupuesto|precio|tarifa|honoraris|euros?)\b/],
+      ['contacte', /\b(contacte|contactar|telefon|trucar|correu|email|mail|whatsapp|parlar|llamar|telefono)\b/],
+      ['on', /\b(on sou|adreca|direccio de l estudi|ubicacio|mapa|com arribar|on esta|donde)\b/],
+      ['zona', /\b(zona|on treballeu|treballeu a|comarca|comarques|lleida|noguera|fora de balaguer)\b/],
+      ['deo', /\b(direccio d execucio|direccio de l obra|deo|direccio facultativa|aparellador|arquitecte tecnic|seguiment d obra|certificacio)\b/],
+      ['ss', /\b(seguretat|salut|coordinacio|plomada|pla de seguretat|ess|ebss)\b/],
+      ['llicencia', /\b(llicencia|licencia|permis|permisos|comunicacio previa|ajuntament|tramit|tramits)\b/],
+      ['qui', /\b(qui sou|qui es|guifre|arquitecte|fundador|estudi dexo|dexo es|equip)\b/],
+      ['serveis', /\b(servei|serveis|que feu|que fas|ofereix|oferiu|interiorisme|bim|pau|autoproteccio|projecte basic|projecte executiu)\b/],
+      ['reforma', /\b(reforma|reformar|rehabilitar|rehabilitacio|reformes|obra nova|ampliacio)\b/],
+      ['projectes', /\b(projectes|obres|treballs|portafoli|exemples|fotos|feina feta)\b/],
+      ['gracies', /\b(gracies|merci|gracias|perfecte|genial|adeu|fins aviat)\b/],
+      ['hola', /^(hola|bon dia|bona tarda|bona nit|ei|hey|hello|buenas)\b/],
+    ];
+    const STOP = new Set(norm('de del dels la les el els un una uns unes i a al als en per amb que com hi ha teniu tens algun alguna algun projecte projectes obra obres fet fets feu fet vull veure ensenya ensenyam mostra mostram busco sobre on es reforma reformes local locals d de l habitatge').split(' '));
+    const findProjects = (t) => {
+      const words = t.split(' ').filter((w) => w.length > 2 && !STOP.has(w));
+      if (!words.length) return [];
+      return P.map((p) => {
+        const hay = norm([p.title, p.type, p.place, p.cats.join(' '), p.key.replace(/-/g, ' ')].join(' '));
+        const sc = words.reduce((s, w) => { const st = w.replace(/s$/, ''); return s + (new RegExp('\\b' + st + '(s|es)?\\b').test(hay) ? 3 : new RegExp('\\b' + st.slice(0, Math.max(3, st.length - 2))).test(hay) ? 1 : 0); }, 0);
+        return [sc, p];
+      }).filter(([sc]) => sc > 0).sort((a, b) => b[0] - a[0]).filter(([sc], _, arr) => sc === arr[0][0]).slice(0, 4).map(([, p]) => p);
+    };
+
+    /* pressupost guiat */
+    let flow = null;
+    const budget = () => {
+      flow = { step: 0 };
+      say('Perfecte. Quin tipus d’obra tens al cap?', ['Habitatge nou', 'Reforma o rehabilitació', 'Local o activitat', 'Direcció d’execució', 'Una altra cosa'].map((l) => [l, () => { flow.tipus = l; flow.step = 1; say('On és l’obra? (municipi)', []); q.focus(); }]));
+    };
+    const flowStep = (txt) => {
+      if (flow.step === 1) { flow.municipi = txt; flow.step = 2; say('Explica’m breument què vols fer: superfície aproximada, estat actual, terminis…'); return; }
+      if (flow.step === 2) {
+        flow.desc = txt; const f = flow; flow = null;
+        const msg = `${f.tipus}. ${f.desc}`;
+        if (home) {
+          const fm = document.querySelector('form.cform');
+          if (fm) {
+            fm.querySelector('[name=municipi]').value = f.municipi;
+            fm.querySelector('[name=missatge]').value = msg;
+            say('Fet! T’he omplert el formulari de contacte amb el que m’has explicat. Afegeix-hi el teu nom i correu, accepta la política de privadesa i prem <b>Envia</b>. Et respondrem personalment.', [['Prefereixo trucar', () => answer('contacte')]]);
+            setTimeout(() => { closeBox(); fm.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => fm.querySelector('[name=nom]').focus({ preventScroll: true }), 600); }, reduce ? 0 : 2600);
+            return;
+          }
+        }
+        const mail = 'mailto:info@dexoestudi.com?subject=' + encodeURIComponent('Pressupost: ' + f.tipus) + '&body=' + encodeURIComponent(`Municipi: ${f.municipi}\n\n${msg}`);
+        say(`Gràcies! <a href="${mail}">Envia’ns aquest resum per correu</a> o truca al <a href="tel:+34606750036">606 750 036</a>.`, MENU());
+      }
+    };
+
+    const reply = (raw) => {
+      const t = norm(raw); if (!t) return;
+      if (flow) return flowStep(raw.trim());
+      for (const [k, re] of INT) {
+        if (k === 'reforma' || k === 'projectes') break;
+        if (re.test(t)) return answer(k);
+      }
+      const found = findProjects(t);
+      if (found.length) return say(`He trobat ${found.length === 1 ? 'aquest projecte' : 'aquests projectes'}. Clica’n un per veure’n les fotos:<div class="cb-ps">${found.map(projCard).join('')}</div>`, MENU());
+      for (const [k, re] of INT) if (re.test(t)) return answer(k);
+      say('No t’he acabat d’entendre. Pots preguntar-me per <b>serveis</b>, <b>projectes</b> o <b>pressupost</b>, o escriure directament a l’estudi.', MENU());
+    };
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = q.value.trim(); if (!v) return;
+      add(esc(v), 'me'); q.value = ''; setChips([]); reply(v);
+    });
+
+    /* obrir / tancar */
+    let started = false;
+    const openBox = () => {
+      box.hidden = false; requestAnimationFrame(() => box.classList.add('open'));
+      fab.classList.add('on'); fab.setAttribute('aria-expanded', 'true'); fab.setAttribute('aria-label', 'Tanca l’assistent');
+      if (!started) { started = true; answer('hola'); }
+      setTimeout(() => q.focus({ preventScroll: true }), 50);
+    };
+    const closeBox = () => {
+      box.classList.remove('open'); fab.classList.remove('on'); fab.setAttribute('aria-expanded', 'false'); fab.setAttribute('aria-label', 'Obre l’assistent de dexo');
+      setTimeout(() => { if (!box.classList.contains('open')) box.hidden = true; }, reduce ? 0 : 260);
+    };
+    fab.addEventListener('click', () => (box.classList.contains('open') ? closeBox() : openBox()));
+    box.querySelector('.cb-x').addEventListener('click', () => { closeBox(); fab.focus(); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && box.classList.contains('open') && !(lb && lb.classList.contains('open'))) { closeBox(); fab.focus(); } });
+  })();
+
 })();
 document.querySelectorAll('.promo-video').forEach((v) => { if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); } });
 /* lletres del botó +: apareixen una a una, com a la portada */
