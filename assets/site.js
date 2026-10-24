@@ -107,31 +107,25 @@
   if (grid) {
     let rt0; addEventListener('resize', () => { clearTimeout(rt0); rt0 = setTimeout(() => { if (openI !== null) { const i = openI; const t = grid.querySelectorAll('.tile')[i]; closeX(); openI = null; if (t) expand(i, t); } }, 200); });
     const filters = document.getElementById('filters');
-    if (filters) {
-      const cats = ['Tots', H, R, E, A, D];
-      let cur = 'Tots';
-      const count = document.getElementById('count');
-      const draw = () => {
-        const list = P.filter((p) => cur === 'Tots' || p.cats.includes(cur));
-        const PL = '<svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line class="h" x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/></svg>';
-        filters.innerHTML = cats.map((c) => `<button type="button" class="flt" aria-pressed="${c === cur}" aria-label="${esc(c)}">${PL}<span class="fl" aria-hidden="true">${Array.from(c).map((ch, i) => `<span class="lc" style="--i:${i}">${ch === ' ' ? '&nbsp;' : esc(ch)}</span>`).join('')}</span></button>`).join('');
-        filters.querySelectorAll('button').forEach((b, k) => b.addEventListener('click', () => { cur = cats[k]; draw(); }));
-        if (count) count.textContent = list.length + ' projectes · ' + (cur === 'Tots' ? 'tots els encàrrecs' : cur.toLowerCase());
-        renderGrid(list);
-      };
-      draw();
-    } else if (grid.dataset.rows) {
-      const more = document.getElementById('more');
-      let rows = +grid.dataset.rows;
-      const drawHome = () => {
-        const n = Math.min(P.length, rows * cols());
-        renderGrid(P.slice(0, n));
-        if (more) more.parentElement.hidden = n >= P.length;
-      };
-      if (more) more.addEventListener('click', () => { rows += 4; drawHome(); });
-      let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (openI === null) drawHome(); }, 150); });
-      drawHome();
-    } else renderGrid(P);
+    const more = document.getElementById('more');
+    const ROWS = +(grid.dataset.rows || 0);
+    let rows = ROWS, cat = 'Tots';
+    const cats = ['Tots', H, R, E, A, D];
+    const PL = '<svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line class="h" x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/></svg>';
+    const drawGrid = () => {
+      const list = P.filter((p) => cat === 'Tots' || p.cats.includes(cat));
+      const n = ROWS ? Math.min(list.length, rows * cols()) : list.length;
+      renderGrid(list.slice(0, n));
+      if (more) more.parentElement.hidden = n >= list.length;
+    };
+    const drawFilters = () => {
+      filters.innerHTML = cats.map((c) => `<button type="button" class="flt" aria-pressed="${c === cat}" aria-label="${esc(c)}">${PL}<span class="fl" aria-hidden="true">${Array.from(c).map((ch, i) => `<span class="lc" style="--i:${i}">${ch === ' ' ? '&nbsp;' : esc(ch)}</span>`).join('')}</span></button>`).join('');
+      filters.querySelectorAll('button').forEach((b, k) => b.addEventListener('click', () => { if (cat === cats[k]) return; cat = cats[k]; rows = ROWS; drawFilters(); drawGrid(); }));
+    };
+    if (filters) drawFilters();
+    if (more) more.addEventListener('click', () => { rows += 4; drawGrid(); });
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (openI === null) drawGrid(); }, 150); });
+    drawGrid();
   }
 
   /* portada: Som + paraula */
