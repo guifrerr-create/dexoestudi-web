@@ -140,6 +140,41 @@
     drawGrid();
   }
 
+  /* formulari de contacte: enviament sense sortir de la pàgina, amb correu de reserva */
+  const cf = document.querySelector('form.cform');
+  if (cf) {
+    const msgBox = document.createElement('p'); msgBox.className = 'cf-msg'; msgBox.setAttribute('role', 'status'); msgBox.hidden = true;
+    cf.append(msgBox);
+    const btn = cf.querySelector('button[type=submit]');
+    const mailto = (fd) => 'mailto:info@dexoestudi.com?subject=' + encodeURIComponent('Consulta des del web: ' + (fd.get('nom') || '')) + '&body=' + encodeURIComponent(`Nom: ${fd.get('nom') || ''}\nCorreu: ${fd.get('correu') || ''}\nTelèfon: ${fd.get('telefon') || ''}\nMunicipi: ${fd.get('municipi') || ''}\n\n${fd.get('missatge') || ''}`);
+    cf.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (cf.querySelector('[name=_honey]').value) return;
+      const fd = new FormData(cf);
+      btn.disabled = true; cf.classList.add('sending');
+      msgBox.hidden = false; msgBox.className = 'cf-msg'; msgBox.textContent = 'Enviant…';
+      const key = cf.dataset.key;
+      try {
+        let ok = false;
+        if (key) {
+          const body = { access_key: key, subject: 'Nou missatge del web dexo', from_name: 'Web dexo', replyto: fd.get('correu'), nom: fd.get('nom'), correu: fd.get('correu'), telefon: fd.get('telefon'), municipi: fd.get('municipi'), missatge: fd.get('missatge') };
+          const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) });
+          ok = r.ok && (await r.json()).success;
+        } else {
+          fd.delete('_next');
+          const r = await fetch('https://formsubmit.co/ajax/info@dexoestudi.com', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
+          ok = r.ok && String((await r.json()).success) === 'true';
+        }
+        if (!ok) throw new Error('send');
+        location.href = 'gracies.html';
+      } catch (err) {
+        btn.disabled = false; cf.classList.remove('sending');
+        msgBox.className = 'cf-msg err';
+        msgBox.innerHTML = 'No s’ha pogut enviar des del web. <a href="' + mailto(fd) + '">Envia’l per correu</a> (ja et deixem el missatge escrit) o truca al <a href="tel:+34606750036">606 750 036</a>.';
+      }
+    });
+  }
+
   /* mapa: només es carrega quan el visitant ho demana (galetes de Google) */
   document.querySelectorAll('.map-off').forEach((m) => {
     m.querySelector('.map-load').addEventListener('click', () => {

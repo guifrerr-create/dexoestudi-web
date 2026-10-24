@@ -414,3 +414,7 @@ a.soc-i.lg:hover{background:var(--ink);color:#fff}
 .map-btns a{font-size:14px;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .map-ui small{font-size:12px;color:var(--mute);line-height:1.4}
 .map-ui small a{text-decoration:underline}
+.cf-msg{grid-column:1/-1;margin:4px 0 0;font-size:14px;color:var(--ink-2)}
+.cf-msg.err{color:#a3261b}
+.cf-msg a{text-decoration:underline;text-underline-offset:2px;font-weight:600}
+form.cform.sending button[type=submit]{opacity:.5;pointer-events:none}
