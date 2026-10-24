@@ -33,6 +33,7 @@
   ].map(([title, type, place, cats, img]) => ({ title, type, place, cats, key: img, src: '../img/projectes/' + img + '.jpg' }));
   /* fotos addicionals per projecte: clau -> llista de fitxers a img/projectes/ */
   const MORE = {
+    'pis-balaguer': ['pis-balaguer-1.jpg', 'pis-balaguer-2.jpg', 'pis-balaguer-3.jpg', 'pis-balaguer-4.jpg', 'pis-balaguer-5.jpg', 'pis-balaguer-6.jpg'],
     plurifamiliar: ['plurifamiliar-1.jpg', 'plurifamiliar-2.jpg'],
     tartareu: ['tartareu-1.jpg', 'tartareu-2.jpg', 'tartareu-3.jpg', 'tartareu-4.jpg', 'tartareu-6.jpg'],
     'mitgeres-historic': ['mitgeres-historic-1.jpg', 'mitgeres-historic-2.jpg', 'mitgeres-historic-3.jpg'],
