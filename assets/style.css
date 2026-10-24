@@ -395,3 +395,11 @@ form.cform{grid-column:auto;padding:20px;gap:10px}
 .soc-b:hover{transform:translateY(-2px)}
 .soc-b.ig:hover{background:#000}
 @media (max-width:520px){.ig-grid{flex:none;aspect-ratio:3/2}}
+.soc-tiles{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.soc-t{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:120px;border-radius:10px;background:#fff;color:var(--ink);text-align:center;transition:background .3s,color .3s,transform .3s cubic-bezier(.22,1,.36,1)}
+.soc-t svg{width:46px;height:46px;margin-bottom:10px;transition:transform .5s cubic-bezier(.68,-.35,.27,1.35)}
+.soc-t b{font-size:15px;font-weight:700}
+.soc-t small{font-size:12.5px;color:var(--mute);transition:color .3s}
+.soc-t:hover{background:var(--ink);color:#fff;transform:translateY(-3px)}
+.soc-t:hover small{color:rgba(255,255,255,.7)}
+.soc-t:hover svg{transform:scale(1.12) rotate(-6deg)}
