@@ -493,3 +493,4 @@ html{scroll-padding-top:96px;scroll-padding-bottom:96px}
 .vid-txt{margin-top:10px;font-size:13px;color:var(--mute)}
 .vid-txt summary{cursor:pointer;display:inline-block;padding:4px 0;font-weight:500}
 .vid-txt p{margin:6px 0 0;line-height:1.6;color:var(--ink-2)}
+img,video{-webkit-user-drag:none;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}

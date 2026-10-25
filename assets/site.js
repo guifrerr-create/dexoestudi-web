@@ -455,3 +455,6 @@ document.querySelectorAll('.btn.plus .lbl').forEach((l) => {
   const t = l.textContent; l.setAttribute('aria-label', t);
   l.innerHTML = Array.from(t).map((c, i) => `<span class="lc" aria-hidden="true" style="--i:${i}">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
 });
+/* protecció bàsica de les fotos: sense menú contextual ni arrossegar */
+document.addEventListener('contextmenu', (e) => { if (e.target.closest && e.target.closest('img, video, .tile, .xp-ph, .lb, .aw-ph')) e.preventDefault(); });
+document.addEventListener('dragstart', (e) => { if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') e.preventDefault(); });
