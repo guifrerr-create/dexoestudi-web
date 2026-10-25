@@ -52,7 +52,9 @@
     montargull: ['masia-montargull-1.jpg', 'masia-montargull-2.jpg', 'masia-montargull-3.jpg'],
     entrada: ['entrada-1.jpg'],
     'reforma-integral-habitatge': ['reforma-integral-habitatge-1.jpg', 'reforma-integral-habitatge-2.jpg', 'reforma-integral-habitatge-3.jpg', 'reforma-integral-habitatge-4.jpg', 'reforma-integral-habitatge-5.jpg', 'reforma-integral-habitatge-6.jpg', 'reforma-integral-habitatge-7.jpg', 'reforma-integral-habitatge-8.jpg'],
-    'marmoles-alias-showroom': ['showroom-1.jpg', 'showroom-2.jpg', 'showroom-3.jpg', 'showroom-4.jpg', 'showroom-5.jpg', 'showroom-6.jpg']
+    'marmoles-alias-showroom': ['showroom-1.jpg', 'showroom-2.jpg', 'showroom-3.jpg', 'showroom-4.jpg', 'showroom-5.jpg', 'showroom-6.jpg'],
+    'marmoles-alias': ['oficines-alias-1.jpg', 'oficines-alias-2.jpg', 'oficines-alias-3.jpg', 'oficines-alias-4.jpg', 'oficines-alias-5.jpg', 'oficines-alias-6.jpg'],
+    'oficina-balaguer': ['oficina-balaguer-1.jpg', 'oficina-balaguer-2.jpg', 'oficina-balaguer-3.jpg']
   };
   const big = (f) => f.replace('img/projectes/', 'img/projectes/w/').replace(/\.jpg$/, '.webp');
   const thumb = (f) => f.replace('img/projectes/', 'img/projectes/t/').replace(/\.jpg$/, '.webp');
@@ -79,7 +81,7 @@
     lb.classList.add('open'); document.body.style.overflow = 'hidden'; lb.querySelector('.x').focus();
   };
   const closeLb = () => { lb.classList.remove('open'); document.body.style.overflow = ''; if (last) last.focus(); };
-  if (lb) { lb.addEventListener('click', closeLb); addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLb(); }); }
+  if (lb) { lb.addEventListener('click', closeLb); addEventListener('keydown', (e) => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') closeLb(); else if (e.key === 'Tab') { e.preventDefault(); lb.querySelector('.x').focus(); } }); }
 
   const api = {};
   /* graella de projectes: clic -> fila amb les fotos del projecte */
@@ -416,7 +418,12 @@
   })();
 
 })();
-document.querySelectorAll('.promo-video').forEach((v) => { if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); } });
+document.querySelectorAll('.promo-media').forEach((m) => {
+  const v = m.querySelector('video'), btn = m.querySelector('.vid-btn');
+  const set = (paused) => { btn.setAttribute('aria-pressed', paused ? 'true' : 'false'); btn.setAttribute('aria-label', paused ? 'Reprodueix el vídeo de presentació' : 'Atura el vídeo de presentació'); m.classList.toggle('paused', paused); };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); set(true); }
+  if (btn) btn.addEventListener('click', () => { if (m.classList.contains('paused')) { const r = v.play(); if (r) r.catch(() => {}); set(false); } else { v.pause(); set(true); } });
+});
 /* lletres del botó +: apareixen una a una, com a la portada */
 document.querySelectorAll('.btn.plus .lbl').forEach((l) => {
   const t = l.textContent; l.setAttribute('aria-label', t);

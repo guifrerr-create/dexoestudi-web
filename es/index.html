@@ -25,10 +25,11 @@
 <link rel="icon" href="../img/logo-dexo.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": ["LocalBusiness", "ProfessionalService"], "@id": "https://dexoestudi.com/#estudi", "name": "dexo · estudio de arquitectura", "legalName": "DEXOESTUDI S.L.", "taxID": "B88854344", "description": "Estudio de arquitectura en Balaguer: proyectos de arquitectura, rehabilitación e interiorismo, dirección de ejecución de obra y coordinación de seguridad y salud.", "url": "https://dexoestudi.com/", "logo": "https://dexoestudi.com/img/logo-dexo.png", "image": "https://dexoestudi.com/img/og-dexo.jpg", "telephone": "+34606750036", "email": "info@dexoestudi.com", "foundingDate": "2011", "award": "2.º premio, Concurso de ideas para remodelar la sede del Colegio de la Arquitectura Técnica de Barcelona (Cateb), 2023; 1.er premio al mejor estand, Fira Q de Balaguer, 2021", "founder": {"@type": "Person", "name": "Guifré Ricart i Real"}, "address": {"@type": "PostalAddress", "streetAddress": "Passatge Gaspar de Portolà, 1, 1r 1a", "postalCode": "25600", "addressLocality": "Balaguer", "addressRegion": "Lleida", "addressCountry": "ES"}, "areaServed": [{"@type": "AdministrativeArea", "name": "Noguera"}, {"@type": "AdministrativeArea", "name": "Lleida"}, {"@type": "AdministrativeArea", "name": "Catalunya"}], "knowsAbout": ["Arquitectura", "Rehabilitació", "Interiorisme", "Direcció d'execució d'obra", "Coordinació de seguretat i salut", "Plans d'autoprotecció (PAU)", "BIM"], "sameAs": ["https://www.instagram.com/dexo_estudi/", "https://www.facebook.com/dexo.estudi"]}</script>
 <link rel="preload" href="../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=1792950391">
+<link rel="stylesheet" href="../assets/style.css?v=1792950555">
 <script data-goatcounter="https://dexoestudi.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">Saltar al contenido</a>
 <header class="top">
   <div class="bar">
     <a class="logo" href="index.html" aria-label="dexo estudio de arquitectura, inicio"><img src="../img/logo-dexo.webp" alt="dexo estudio de arquitectura" width="87" height="34"></a>
@@ -39,9 +40,9 @@
     </div>
   </div>
 </header>
-<main>
+<main id="main" tabindex="-1">
 <section class="hero" id="inici" aria-label="Portada">
-  <p class="morph"><span class="som" aria-hidden="true">Somos</span><span class="sr">Somos arquitectura, diseño y rehabilitación</span><span class="word" id="word" aria-hidden="true">arquitectura</span></p>
+  <h1 class="morph"><span class="som" aria-hidden="true">Somos</span><span class="sr">Somos arquitectura, diseño y rehabilitación</span><span class="word" id="word" aria-hidden="true">arquitectura</span></h1>
 </section>
 
 <section class="sec wrap" id="estudi" aria-labelledby="h-estudi">
@@ -83,15 +84,18 @@
 </section>
 
 <section class="wrap sec" aria-label="Plomada SiS">
-  <a class="promo" href="https://plomada.cat" target="_blank" rel="noopener">
-    <div class="promo-txt">
+  <div class="promo">
+    <a class="promo-txt" href="https://plomada.cat" target="_blank" rel="noopener">
       <span class="promo-tag">Herramienta del estudio · plomada.cat</span>
       <h2>Plomada SiS</h2>
       <p>Coordinación de seguridad y salud desde el móvil. Haz la visita de obra, registra incidencias y documentación de los industriales, y sal de la obra con el acta en PDF.</p>
     <span class="btn promo-btn plus"><span class="lbl">Pruébala 14 días gratis</span><svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line class="h" x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/></svg></span>
+    <span class="sr"> (se abre en una pestaña nueva)</span></a>
+    <div class="promo-media">
+      <a href="https://plomada.cat" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><video class="promo-video" src="../video/plomada-sis.mp4" poster="../video/plomada-sis.jpg" autoplay muted loop playsinline preload="metadata"></video></a>
+      <button type="button" class="vid-btn" aria-pressed="false" aria-label="Detener el vídeo de presentación"><svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></button>
     </div>
-    <video class="promo-video" src="../video/plomada-sis.mp4" poster="../video/plomada-sis.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Vídeo de presentación de Plomada SiS"></video>
-  </a>
+  </div>
 </section>
 
 <section class="sec wrap" id="premis" aria-labelledby="h-premis">
@@ -165,6 +169,6 @@
     <div class="legal"><span>© 2026 dexo estudio de arquitectura</span><span>Ptge. Gaspar de Portolà, 1, 1.º 1.ª · 25600 Balaguer · info@dexoestudi.com</span></div>
   </div>
 </footer>
-<script src="../assets/site.es.js?v=1792950391"></script>
+<script src="../assets/site.es.js?v=1792950555"></script>
 </body>
 </html>
