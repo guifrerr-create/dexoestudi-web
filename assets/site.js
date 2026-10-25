@@ -50,7 +50,7 @@
     'escola-dominical': ['escola-dominical-1.jpg', 'escola-dominical-2.jpg'],
     bugaderia: ['bugaderia-1.jpg', 'bugaderia-2.jpg', 'bugaderia-3.jpg', 'bugaderia-4.jpg'],
     montargull: ['masia-montargull-1.jpg', 'masia-montargull-2.jpg', 'masia-montargull-3.jpg'],
-    entrada: ['entrada-1.jpg'],
+    entrada: ['entrada-1.jpg', 'entrada-2.jpg', 'entrada-3.jpg', 'entrada-4.jpg', 'entrada-5.jpg'],
     'reforma-integral-habitatge': ['reforma-integral-habitatge-1.jpg', 'reforma-integral-habitatge-2.jpg', 'reforma-integral-habitatge-3.jpg', 'reforma-integral-habitatge-4.jpg', 'reforma-integral-habitatge-5.jpg', 'reforma-integral-habitatge-6.jpg', 'reforma-integral-habitatge-7.jpg', 'reforma-integral-habitatge-8.jpg'],
     'marmoles-alias-showroom': ['showroom-1.jpg', 'showroom-2.jpg', 'showroom-3.jpg', 'showroom-4.jpg', 'showroom-5.jpg', 'showroom-6.jpg'],
     'marmoles-alias': ['oficines-alias-1.jpg', 'oficines-alias-2.jpg', 'oficines-alias-3.jpg', 'oficines-alias-4.jpg', 'oficines-alias-5.jpg', 'oficines-alias-6.jpg'],
