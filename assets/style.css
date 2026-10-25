@@ -456,3 +456,6 @@ a.promo-txt{color:var(--ink)}
 .vid-btn .i-play,.promo-media.paused .vid-btn .i-pause{display:none}
 .promo-media.paused .vid-btn .i-play{display:block}
 main:focus{outline:none}
+@media (min-width:701px){.award{grid-template-columns:auto auto 1fr auto auto}}
+.aw-img{display:block;width:168px;aspect-ratio:4/3;height:auto;object-fit:cover;border-radius:6px;background:var(--soft)}
+@media (max-width:700px){.aw-img{grid-column:1/-1;width:100%;aspect-ratio:16/9}span.aw-img{display:none}}
