@@ -50,7 +50,8 @@
     'escola-dominical': ['escola-dominical-1.jpg', 'escola-dominical-2.jpg'],
     bugaderia: ['bugaderia-1.jpg', 'bugaderia-2.jpg', 'bugaderia-3.jpg', 'bugaderia-4.jpg'],
     montargull: ['masia-montargull-1.jpg', 'masia-montargull-2.jpg', 'masia-montargull-3.jpg'],
-    entrada: ['entrada-1.jpg']
+    entrada: ['entrada-1.jpg'],
+    'reforma-integral-habitatge': ['reforma-integral-habitatge-1.jpg', 'reforma-integral-habitatge-2.jpg', 'reforma-integral-habitatge-3.jpg', 'reforma-integral-habitatge-4.jpg', 'reforma-integral-habitatge-5.jpg', 'reforma-integral-habitatge-6.jpg', 'reforma-integral-habitatge-7.jpg', 'reforma-integral-habitatge-8.jpg']
   };
   const big = (f) => f.replace('img/projectes/', 'img/projectes/w/').replace(/\.jpg$/, '.webp');
   const thumb = (f) => f.replace('img/projectes/', 'img/projectes/t/').replace(/\.jpg$/, '.webp');
