@@ -495,17 +495,18 @@ html{scroll-padding-top:96px;scroll-padding-bottom:96px}
 .vid-txt p{margin:6px 0 0;line-height:1.6;color:var(--ink-2)}
 img,video{-webkit-user-drag:none;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
 
-/* certificats */
-.certs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
-.cert{display:flex;flex-direction:column;gap:14px;padding:clamp(22px,2.4vw,32px);border-radius:10px;background:var(--soft)}
-.ct-n{font-size:13px;font-weight:600;color:var(--mute);font-variant-numeric:tabular-nums}
-.cert h3{margin:0;font-size:clamp(20px,1.8vw,24px);font-weight:500;letter-spacing:-.02em;line-height:1.2}
-.cert>p{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2)}
-.cert dl{margin:4px 0 6px;display:grid;gap:12px;border-top:1px solid var(--line);padding-top:16px}
-.cert dt{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:3px}
-.cert dd{margin:0;font-size:14px;line-height:1.55;color:var(--ink-2)}
-.cert .ct-go{margin-top:auto;align-self:flex-start}
-.ct-note{margin:18px 0 0;font-size:14px;color:var(--mute)}
-.cert .ct-go .lbl{max-width:280px;opacity:1;transform:none;margin-right:12px}
-.cert .ct-go .lc{opacity:1;filter:none;transform:none}
-.cert:hover .ct-go .pl{transform:rotate(180deg)}
+/* certificats (compacte) */
+.certs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.cert{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px 32px;padding:20px 8px;border-bottom:1px solid var(--line);transition:background .3s}
+.cert:hover{background:var(--soft)}
+.ct-main h3{margin:0 0 4px;font-size:clamp(17px,1.5vw,20px);font-weight:500;letter-spacing:-.015em;line-height:1.3}
+.ct-main p{margin:0;font-size:14px;line-height:1.5;color:var(--mute)}
+.ct-price{margin:0;font-size:14px;color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+.ct-price b{font-size:20px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.cert .ct-go,.cert .ct-pay{justify-self:end}
+.cert .btn.plus .lbl{max-width:280px;opacity:1;transform:none;margin-right:12px}
+.cert .btn.plus .lc{opacity:1;filter:none;transform:none}
+.cert:hover .btn.plus .pl{transform:rotate(180deg)}
+.ct-note{margin:14px 0 0;font-size:13px;color:var(--mute)}
+.ct-note a{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:700px){.cert{grid-template-columns:1fr auto;padding:18px 4px}.ct-main{grid-column:1/-1}.ct-price{grid-column:1}.cert .ct-go,.cert .ct-pay{grid-column:2}}

@@ -96,7 +96,7 @@
     const f = document.querySelector('.cform');
     if (!f) { location.href = 'index.html#contacte'; return; }
     const t = f.querySelector('[name=missatge]');
-    t.value = 'Voldria pressupost per a: ' + name + '.' + '\n' + 'Adreça de l’immoble: ' + '\n' + 'Superfície aproximada (m²): ';
+    t.value = 'Voldria sol·licitar: ' + name + '.' + '\n' + 'Adreça de l’immoble: ' + '\n' + 'Superfície aproximada (m²): ';
     f.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
     setTimeout(() => f.querySelector('[name=nom]').focus({ preventScroll: true }), reduce ? 0 : 600);
   };
@@ -472,3 +472,5 @@ document.querySelectorAll('.btn.plus .lbl').forEach((l) => {
 /* protecció bàsica de les fotos: sense menú contextual ni arrossegar */
 document.addEventListener('contextmenu', (e) => { if (e.target.closest && e.target.closest('img, video, .tile, .xp-ph, .lb, .aw-ph')) e.preventDefault(); });
 document.addEventListener('dragstart', (e) => { if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') e.preventDefault(); });
+/* pàgina de gràcies després de pagar amb Stripe (?pagament=ok) */
+if (/pagament=ok/.test(location.search)) { const gp = document.querySelector('main .hero p'); if (gp) gp.textContent = 'Hem rebut el pagament. Us trucarem per fixar el dia de la visita i us enviarem la factura per correu.'; }
