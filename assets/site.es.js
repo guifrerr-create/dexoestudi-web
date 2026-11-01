@@ -91,6 +91,17 @@
   };
   const closeLb = () => { lb.classList.remove('open'); document.body.style.overflow = ''; if (last) last.focus(); };
   document.querySelectorAll('.aw-ph').forEach((b) => b.addEventListener('click', (ev) => { ev.preventDefault(); const aw = b.closest('.award'); openLb({ src: b.querySelector('img').src.replace('/premis/t/', '/premis/w/'), title: aw.querySelector('h3').textContent, type: aw.querySelector('.aw-main p').textContent, place: aw.querySelector('.aw-year').textContent }, b); }));
+  /* certificats: el botó omple el formulari de contacte */
+  const certReq = (name) => {
+    const f = document.querySelector('.cform');
+    if (!f) { location.href = 'index.html#contacte'; return; }
+    const t = f.querySelector('[name=missatge]');
+    t.value = 'Quisiera presupuesto para: ' + name + '.' + '\n' + 'Dirección del inmueble: ' + '\n' + 'Superficie aproximada (m²): ';
+    f.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    setTimeout(() => f.querySelector('[name=nom]').focus({ preventScroll: true }), reduce ? 0 : 600);
+  };
+  window.dexoCert = certReq;
+  document.querySelectorAll('.ct-go').forEach((b) => b.addEventListener('click', () => certReq(b.closest('.cert').querySelector('h3').textContent.trim())));
   if (lb) { lb.addEventListener('click', closeLb); addEventListener('keydown', (e) => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') closeLb(); else if (e.key === 'Tab') { e.preventDefault(); lb.querySelector('.x').focus(); } }); }
 
   const api = {};
@@ -255,7 +266,7 @@
     const PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
     const UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>';
     const CHEV = '<svg class="cv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>';
-    const TOPICS = [['¿Qué hacéis?', 'serveis'], ['Ver proyectos', 'projectes'], ['Pedir presupuesto', 'budget'], ['Dirección de ejecución', 'deo'], ['Seguridad y salud', 'ss'], ['Contacto', 'contacte'], ['¿Dónde estáis?', 'on']];
+    const TOPICS = [['¿Qué hacéis?', 'serveis'], ['Certificados', 'cert'], ['Ver proyectos', 'projectes'], ['Pedir presupuesto', 'budget'], ['Dirección de ejecución', 'deo'], ['Seguridad y salud', 'ss'], ['Contacto', 'contacte'], ['¿Dónde estáis?', 'on']];
     box.innerHTML = `<div class="cb-card"><header class="cb-h"><div class="cb-id"><span class="cb-av">d</span><div><b>dexo<i></i></b><small><span class="cb-on"></span>Asistente del estudio</small></div></div><button type="button" class="cb-x" aria-label="Cerrar el asistente">${ICON}</button></header>
       <div class="cb-log" role="log" aria-live="polite" aria-label="Conversación" tabindex="0"></div>
       <div class="cb-chips"></div>
@@ -322,6 +333,7 @@
       contacte: () => say('Puedes llamar al <a href="tel:+34606750036">606 750 036</a>, escribir a <a href="mailto:info@dexoestudi.com">info@dexoestudi.com</a> o venir al estudio, en el Ptge. Gaspar de Portolà, 1, 1.º 1.ª, de Balaguer.', [['Pedir presupuesto', () => budget()], ['¿Dónde estáis?', () => answer('on')]]),
       on: () => say('Estamos en el <b>Passatge Gaspar de Portolà, 1, 1.º 1.ª, 25600 Balaguer</b>. <a href="https://www.google.com/maps/search/?api=1&query=Passatge+Gaspar+de+Portol%C3%A0+1+25600+Balaguer" target="_blank" rel="noopener">Abrir el mapa ↗</a>. Si vienes, avísanos antes para asegurarte de que estamos.', [['Contacto', () => answer('contacte')], ['¿Dónde trabajáis?', () => answer('zona')]]),
       zona: () => say('El estudio está en Balaguer y trabajamos sobre todo en la Noguera y en las comarcas de Lleida. También hacemos encargos en Barcelona.', [['Ver proyectos', () => answer('projectes')], ['Pedir presupuesto', () => budget()]]),
+      cert: () => say('Hacemos <b>cédulas de habitabilidad</b>, <b>certificados energéticos</b> y <b>certificados de amianto</b>: la visita, el certificado y el trámite. ¿Cuál necesitas?', ['Cédula de habitabilidad', 'Certificado energético', 'Certificado de amianto'].map((c) => [c, () => { closeBox(); fab.focus(); window.dexoCert(c); }])),
       deo: () => say('La <b>dirección de ejecución</b> vela para que la obra se construya tal como dice el proyecto: control de calidad y de materiales, mediciones, certificaciones y seguimiento del plazo y del coste. Lo hacemos en viviendas, equipamientos y locales.', [['Ver proyectos', () => { showCat(D); say('Te he filtrado los proyectos de dirección de ejecución.', MENU()); }], ['Seguridad y salud', () => answer('ss')]]),
       ss: () => say('Coordinamos la <b>seguridad y salud</b> de las obras en fase de proyecto y de ejecución: estudios y planes, visitas y seguimiento. También lo hacemos a través de <a href="https://plomada.cat" target="_blank" rel="noopener">Plomada SiS ↗</a>.', [['Pedir presupuesto', () => budget()], ['¿Qué más hacéis?', () => answer('serveis')]]),
       llicencia: () => say('Redactamos el proyecto y la documentación para tramitar la <b>licencia de obras</b> o la comunicación previa al Ayuntamiento, y hacemos el seguimiento hasta que la tienes.', [['Pedir presupuesto', () => budget()], ['Contacto', () => answer('contacte')]]),
@@ -333,6 +345,7 @@
 
     /* intents per paraules clau */
     const INT = [
+      ['cert', /\b(cedula|cedules|habitabilitat|habitabilidad|certificat energetic|certificats energetics|certificado energetico|eficiencia energetica|etiqueta energetica|amiant|amianto|uralita|fibrociment|fibrocemento)\b/],
       ['preu', /\b(preu|preus|cost|costa|costaria|quant|pressupost|presupuesto|precio|tarifa|honoraris|euros?|cuanto|cuesta|costaria|presupuestos|precios)\b/],
       ['contacte', /\b(contacte|contactar|telefon|trucar|correu|email|mail|whatsapp|parlar|llamar|telefono|contacto|contactar|correo|hablar)\b/],
       ['on', /\b(on sou|adreca|direccio de l estudi|ubicacio|mapa|com arribar|on esta|donde|direccion|ubicacion|como llegar)\b/],
