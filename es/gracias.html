@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="glassnav tsnav fnou">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,42 +22,805 @@
 <link rel="icon" href="../img/logo-dexo.png">
 <meta name="robots" content="noindex">
 <link rel="preload" href="../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/style.css?v=1793607804">
 <script data-goatcounter="https://dexoestudi.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<style>
+
+@font-face{font-family:Manrope;font-style:normal;font-display:swap;font-weight:200 800;src:url(../assets/fonts/manrope-latin-wght-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Manrope;font-style:normal;font-display:swap;font-weight:200 800;src:url(../assets/fonts/manrope-latin-ext-wght-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+:root{
+  /* clar: el web publicat */
+  --paper:#ffffff;--soft:#f5f5f4;--ink:#2e3236;--ink-2:#4b5054;--mute:#6f6c66;--line:#e7e5e1;--grid:rgba(46,50,54,.055);
+  /* pedra de Balaguer: l'accent */
+  --stone:#b8946a;--stone-d:#7a5c3c;
+  /* fosc: la proposta go.arch */
+  --gr:#383e42;--gr2:#2f3438;--gr3:#454b50;--on:#ece9e4;--on-2:#c6c1b9;--on-mu:#a19b92;--sand:#b8946a;--gln:rgba(255,255,255,.06);
+  --max:1180px;--pad:clamp(20px,4vw,48px);
+  --hd:"Oswald","Arial Narrow",sans-serif;--bd:"Manrope",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--bd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+.dk :focus-visible{outline-color:var(--sand)}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:fixed;left:16px;top:-60px;z-index:100;background:var(--ink);color:#fff;padding:10px 16px;font-weight:600}
+.skip:focus{top:16px}
+.wrap{width:min(var(--max),100% - 2*var(--pad));margin-inline:auto}
+
+/* la retícula: quatre columnes que lliguen tot el web */
+.gl{position:relative;isolation:isolate}
+.gl::before{display:none;content:"";position:absolute;top:0;bottom:0;left:50%;width:min(var(--max),100% - 2*var(--pad));transform:translateX(-50%);pointer-events:none;z-index:-1;
+  background:linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/25% 100%;border-right:1px solid var(--grid)}
+.dk{background:var(--gr);color:var(--on);--grid:var(--gln)}
+
+/* capçalera (la del web) */
+.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .3s}
+.top.sc{border-bottom-color:var(--line)}
+.bar{height:66px;width:min(var(--max),100% - 2*var(--pad));margin-inline:auto;display:flex;align-items:center;gap:28px}
+.bar .logo img{width:87px;height:auto}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,34px);margin-left:auto}
+.nav a{position:relative;font-family:var(--hd);font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);padding:8px 0;transition:color .2s}
+.nav a::after{content:"";position:absolute;left:0;right:100%;bottom:3px;height:1px;background:currentColor;transition:right .35s cubic-bezier(.22,1,.36,1)}
+.nav a:hover,.nav a[aria-current="true"]{color:var(--ink)}
+.nav a:hover::after,.nav a[aria-current="true"]::after{right:0}
+.right{display:flex;align-items:center;gap:14px}
+.lang{font-size:13px;font-weight:600;color:var(--mute);padding:6px}
+.lang:hover{color:var(--ink)}
+.btn-k{display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;font-weight:600;transition:background .2s}
+.btn-k:hover{background:#000}
+
+/* PORTADA: el "Som…" del web, amb la retícula i un marge lateral */
+.hero{position:relative;min-height:min(820px,calc(100svh - 66px));display:flex;align-items:center;justify-content:center;padding:24px var(--pad) 90px}
+@keyframes chIn{from{opacity:0;filter:blur(5px);transform:translateY(5px)}to{opacity:1;filter:blur(0);transform:none}}
+
+/* títols de secció: Oswald espaiat, amb la paraula fantasma darrere */
+.sec{padding:clamp(80px,9vw,136px) 0}
+.sh{position:relative;text-align:center;margin:0 0 clamp(44px,5vw,76px)}
+.sh h2{margin:0;font-family:var(--hd);font-weight:400;font-size:clamp(24px,2.4vw,32px);letter-spacing:.34em;text-transform:uppercase;padding-left:.34em}
+.sh p{margin:14px auto 0;max-width:52ch;color:var(--mute);font-size:15px}
+.dk .sh h2{color:#fff}.dk .sh p{color:var(--on-mu)}
+
+/* PROJECTES (banda fosca) */
+.flt{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 30px;margin:-22px 0 40px}
+.flt button{border:0;background:none;padding:8px 0;font-family:var(--hd);font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--on-mu);cursor:pointer;position:relative;transition:color .2s}
+.flt button::after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:1px;background:var(--sand);transition:right .35s cubic-bezier(.22,1,.36,1)}
+.flt button:hover{color:#fff}
+.flt button[aria-pressed="true"]{color:var(--sand)}
+.flt button[aria-pressed="true"]::after{right:0}
+.flt sup{font-size:11px;letter-spacing:0;margin-left:4px;color:var(--on-mu)}
+.pj{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));list-style:none;margin:0;padding:0}
+.pj li{min-width:0}
+.pc{position:relative;display:block;width:100%;height:clamp(320px,29vw,440px);padding:0;border:0;overflow:hidden;background:#2e2e2e;cursor:pointer;text-align:left;color:#fff}
+.pc img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+.pc::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(18,18,18,.78) 0%,rgba(18,18,18,.12) 34%,rgba(18,18,18,.08) 62%,rgba(18,18,18,.66) 100%)}
+.pc::after{content:"";position:absolute;inset:0;z-index:1;background:rgba(30,30,30,.3);transition:opacity .5s}
+.pc:hover img,.pc:focus-visible img{transform:scale(1.05)}
+.pc:hover::after,.pc:focus-visible::after{opacity:0}
+.pc:focus-visible{outline-offset:-4px}
+.pc-t{position:absolute;z-index:2;left:clamp(16px,1.8vw,24px);right:16px;top:clamp(20px,2.2vw,28px);font-family:var(--hd);font-weight:500;font-size:clamp(14px,1.1vw,16px);line-height:1.25;letter-spacing:.03em;text-transform:uppercase}
+.pc-t small{display:block;margin-top:8px;font-family:var(--bd);font-weight:500;font-size:12.5px;letter-spacing:0;text-transform:none;color:#ddd8d0}
+.pc-c{position:absolute;z-index:2;left:clamp(16px,1.8vw,24px);bottom:26px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#eee}
+.pc-n{position:absolute;z-index:2;right:18px;bottom:22px;font-size:12.5px;color:var(--sand);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.pc:hover .pc-n,.pc:focus-visible .pc-n{opacity:1;transform:none}
+.pj-more{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:44px}
+.pj-more small{color:var(--on-mu);font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 24px;border:0;border-radius:999px;background:var(--sand);color:#2e3236;font-family:var(--bd);font-size:14px;font-weight:700;cursor:pointer;transition:background .25s}
+.pill:hover{background:#c9a782}
+.pill svg{width:15px;height:15px}
+
+/* ESTUDI compacte, amb el 15 */
+.es{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
+.es h3{margin:0 0 16px;font-weight:700;font-size:clamp(19px,1.6vw,22px);line-height:1.3;letter-spacing:-.015em}
+.es-p{margin:0;padding-right:clamp(16px,2vw,28px)}
+.es-p .ph{aspect-ratio:4/5;overflow:hidden;background:var(--soft)}
+.es-p img{width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 22%;filter:grayscale(1);transition:filter .7s}
+.es-p:hover img{filter:none}
+.es-p figcaption{padding-top:10px}
+.es-p b{display:block;font-size:16px;font-weight:700}
+.es-p small{display:block;font-size:14px;color:var(--mute);margin-top:2px}
+.yr{margin:0;display:flex;align-items:center;gap:14px;padding-right:12px}
+.yr b{font-family:var(--hd);font-weight:600;font-size:clamp(96px,9.6vw,140px);line-height:.78;letter-spacing:-.04em;color:transparent;background:url(../img/estudi.webp) 50% 24%/cover;-webkit-background-clip:text;background-clip:text}
+.yr>span{font-size:15.5px;font-weight:700;line-height:1.35}
+.yr small{display:block;font-weight:400;font-size:14px;color:var(--mute);margin-top:2px}
+.es-t{grid-column:2/4;padding:0 clamp(20px,2.4vw,36px)}
+.es-t p{margin:0 0 10px;color:var(--ink-2);font-size:15px;line-height:1.6;max-width:62ch}
+.es-t p.lead{color:var(--ink);font-size:16px}
+.es-t details{margin-top:4px}
+.es-t summary{display:inline-flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-size:14px;font-weight:600;color:var(--stone-d);padding:6px 0}
+.es-t summary::-webkit-details-marker{display:none}
+.es-t summary::after{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .25s}
+.es-t details[open] summary::after{transform:rotate(225deg) translateY(-1px)}
+.es-t details p{margin-top:8px}
+.es-f{padding-left:clamp(16px,2vw,28px)}
+.sp{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.sp li{display:flex;align-items:center;gap:14px;font-size:15px;font-weight:600}
+.sp svg{width:32px;height:24px;flex:0 0 32px;color:var(--stone)}
+.es2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr) minmax(0,1.5fr);align-items:center;margin-top:clamp(20px,2.2vw,30px);padding-top:18px;border-top:1px solid var(--line)}
+.pr{display:flex;align-items:center;gap:16px;padding-right:20px}
+.pr .ph{width:72px;height:88px;flex:0 0 72px;overflow:hidden;background:var(--soft)}
+.pr img{width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 22%;filter:grayscale(1);transition:filter .6s}
+.pr:hover img{filter:none}
+.pr b{display:block;font-size:15.5px;font-weight:700}
+.pr small{display:block;font-size:14px;color:var(--mute);margin-top:2px}
+.cr{display:flex;align-items:center;gap:20px;padding:0 clamp(16px,2vw,28px)}
+.cr .lg{flex:0 0 auto;height:48px;display:flex;align-items:center}
+.cr .lg img{height:100%;width:auto;max-width:170px;object-fit:contain}
+.cr h4{margin:0 0 3px;font-size:15px;font-weight:700;line-height:1.35}
+.cr p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+
+/* PREMIS */
+.aw-ph{width:60px;height:60px;padding:0;border:0;background:var(--soft);cursor:zoom-in;overflow:hidden}
+.aw-ph img{width:100%;height:100%;object-fit:cover}
+
+/* CLIENTS */
+
+/* PLOMADA: tal com al web */
+
+/* CONTACTE (banda fosca) */
+.ct{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.ct-i{display:flex;flex-direction:column;gap:6px;font-size:15px;color:var(--on-2);padding-right:24px}
+.ct-i a:hover{color:var(--sand)}
+.ct-i p{margin:0 0 18px;color:var(--on-mu);font-size:15px}
+.ct-i .map{margin-top:14px;color:var(--sand);font-size:14px}
+.cf{grid-column:2/5;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.f{position:relative;display:flex;flex-direction:column;background:var(--gr3);padding:10px 14px 4px;transition:box-shadow .2s}
+.f:focus-within{box-shadow:inset 0 -2px 0 var(--sand)}
+.f label{font-size:12.5px;color:var(--on-mu)}
+.f input,.f textarea{width:100%;border:0;background:transparent;color:#fff;font:inherit;font-size:15px;padding:4px 0 8px;outline:none;resize:vertical}
+.f.msg{grid-column:3;grid-row:1/3}
+.f.msg textarea{flex:1;min-height:90px}
+.cf-b{grid-column:1/4;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:6px}
+.chk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--on-mu)}
+.chk input{width:18px;height:18px;accent-color:var(--sand)}
+.chk a{text-decoration:underline;color:var(--on-2)}
+.cf-n{grid-column:1/4;margin:0;font-size:14px;color:var(--sand)}
+
+/* PEU */
+.ft{background:var(--gr2);color:var(--on-mu);padding:36px 0 44px}
+.ft .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px}
+.ft img{width:96px;filter:brightness(0) invert(1)}
+.ft p{margin:0;font-size:13px;text-align:center}
+.ft nav{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:6px 20px;font-size:13px}
+.ft nav a:hover{color:var(--sand)}
+
+/* VISOR */
+.lb{position:fixed;inset:0;z-index:80;background:rgba(20,20,20,.97);display:none;grid-template-rows:auto minmax(0,1fr) auto;color:#fff}
+.lb.on{display:grid}
+.lb-h{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px var(--pad)}
+.lb-h b{font-family:var(--hd);font-weight:400;font-size:clamp(16px,1.6vw,22px);letter-spacing:.1em;text-transform:uppercase}
+.lb-h small{display:block;font-size:13px;color:var(--on-mu);margin-top:2px}
+.lb-x{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:none;cursor:pointer;display:grid;place-items:center;flex:0 0 auto}
+.lb-x svg{width:16px;height:16px}
+.lb-m{position:relative;display:flex;align-items:center;justify-content:center;padding:0 clamp(56px,7vw,110px);min-height:0}
+.lb-m img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transition:opacity .25s}
+.lb-m img.ld{opacity:0}
+.lb-a{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.3);cursor:pointer;display:grid;place-items:center}
+.lb-a:hover{border-color:var(--sand);color:var(--sand)}
+.lb-a svg{width:18px;height:18px}
+.lb-p{left:var(--pad)}.lb-n{right:var(--pad)}
+.lb-f{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px var(--pad) 22px;font-size:13.5px;color:var(--on-2)}
+.lb-f span:first-child{color:var(--sand);font-variant-numeric:tabular-nums}
+.lb :focus-visible{outline-color:var(--sand)}
+
+
+/* fila de fotos que s'obre a sota, com al web */
+.pj .xp{grid-column:1/-1;display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1);background:var(--gr2)}
+.pj .xp.open{grid-template-rows:1fr}
+.xp-in{overflow:hidden;min-height:0}
+.xp-h{display:flex;justify-content:space-between;align-items:center;gap:16px;width:min(var(--max),100% - 2*var(--pad));margin:0 auto;padding:26px 0 18px}
+.xp-h b{display:block;font-family:var(--hd);font-weight:400;font-size:clamp(17px,1.6vw,22px);letter-spacing:.1em;text-transform:uppercase;color:#fff}
+.xp-h small{display:block;margin-top:4px;font-size:14px;color:var(--on-mu)}
+.xp-btns{display:flex;gap:8px;flex:0 0 auto}
+.xp-btns button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:none;color:#fff;display:grid;place-items:center;cursor:pointer;transition:border-color .2s,color .2s}
+.xp-btns button:hover{border-color:var(--sand);color:var(--sand)}
+.xp-btns svg{width:17px;height:17px}
+.xp-nav[aria-disabled="true"]{opacity:.35;cursor:default}
+.xp-nav[hidden]{display:none}
+.xp-row{display:flex;gap:6px;overflow-x:auto;padding:0 max(var(--pad),calc(50% - var(--max)/2));scrollbar-width:none;cursor:grab;scroll-padding-inline:max(var(--pad),calc(50% - var(--max)/2))}
+.xp-row::-webkit-scrollbar{display:none}
+.xp-row.drag{cursor:grabbing;user-select:none}
+.xp-row.drag .xp-ph{pointer-events:none}
+.xp-ph{flex:0 0 auto;height:min(220px,42vw);padding:0;border:0;overflow:hidden;background:#333;cursor:zoom-in}
+.xp-ph img{height:100%;width:auto;max-width:none;display:block;transition:opacity .3s}
+.xp-ph:hover img{opacity:.85}
+.xp-ph:focus-visible{outline-offset:-3px}
+.xp-bar{position:relative;height:2px;width:min(var(--max),100% - 2*var(--pad));margin:18px auto 30px;background:rgba(255,255,255,.12);overflow:hidden}
+.xp-bar span{display:block;height:100%;background:var(--sand);transition:transform .15s linear,width .3s}
+.xp-bar[hidden]{display:none}
+.pc[aria-expanded="true"]::after{opacity:0}
+.pc[aria-expanded="true"]{box-shadow:inset 0 -3px 0 var(--sand)}
+@media (hover:none){.xp-nav{display:none}}
+
+
+/* transicions de color: degradats suaus (corba sinusoidal, sense salts) */
+.fd{height:clamp(90px,9vw,140px);pointer-events:none}
+.fd.gl{--grid:rgba(128,128,128,.09)}
+#projectes{padding-top:clamp(24px,3vw,48px)}
+#estudi{padding-top:clamp(32px,4vw,56px);padding-bottom:clamp(48px,5vw,72px)}
+#contacte{padding-top:clamp(24px,3vw,48px)}
+.ft{background:linear-gradient(180deg,var(--gr) 0%,var(--gr2) 100%)}
+
+/* CLIENTS: dues files que es desplacen, com al web; color en passar-hi el ratolí */
+.clients{text-align:center;padding:0 0 clamp(72px,8vw,112px)}
+.mq{display:flex;flex-direction:column;gap:30px}
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee .run{display:flex;align-items:center;gap:72px;width:max-content;padding-right:72px;animation:run 38s linear infinite}
+.marquee.rev .run{animation-direction:reverse;animation-duration:44s}
+.marquee:hover .run,.marquee:focus-within .run{animation-play-state:paused}
+.marquee img{width:auto;flex:0 0 auto;filter:grayscale(1);opacity:.6;transition:filter .35s,opacity .35s}
+.marquee img:hover{filter:none;opacity:1}
+@keyframes run{to{transform:translateX(-50%)}}
+
+
+
+/* PLOMADA: l'anunci del disseny fosc */
+.pm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:var(--gr2);color:var(--on);box-shadow:0 40px 80px -40px rgba(0,0,0,.55)}
+@media (max-width:860px){.pm{grid-template-columns:1fr}}
+
+
+
+
+.mnu{display:none;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:none;cursor:pointer;color:var(--ink)}
+.mnu svg{width:22px;height:22px}.mnu path{transition:transform .3s;transform-origin:12px 12px}
+.mnu[aria-expanded="true"] .l1{transform:translateY(4px) rotate(45deg)}.mnu[aria-expanded="true"] .l2{transform:translateY(-4px) rotate(-45deg)}
+
+/* ASSISTENT (el xat del web publicat) */
+:root{--cb-bg:#18181c;--cb-1:#1f1f25;--cb-2:#26262c;--cb-3:#2b2b33;--cb-tx:#f4f4f6;--cb-mu:#a3a2ab;--cb-ln:rgba(255,255,255,.094);--cb-ln2:rgba(255,255,255,.067);--cb-hi:inset 0 1px 0 rgba(255,255,255,.05);--cb-gr:rgba(96,148,114,.48);--cb-grl:rgba(168,222,186,.36);--cb-link:#8da8ff}
+.cb-fab{position:fixed;right:clamp(16px,2.4vw,28px);bottom:clamp(16px,2.4vw,28px);z-index:45;display:inline-flex;align-items:center;height:56px;min-width:56px;padding:0 17px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(24,24,28,.7);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);color:var(--cb-tx);font:inherit;font-size:15px;font-weight:500;cursor:pointer;box-shadow:0 20px 45px -15px rgba(0,0,0,.45),var(--cb-hi);transition:transform .25s cubic-bezier(.22,1,.36,1),background .25s}
+.cb-fab:hover{transform:translateY(-2px);background:rgba(38,38,44,.8)}
+.cb-fab::after{content:"";position:absolute;top:13px;left:34px;width:8px;height:8px;border-radius:50%;background:#6fc28e;box-shadow:0 0 0 2px var(--cb-bg);transition:opacity .2s}
+.cb-fab.on::after{opacity:0}
+.cb-fab svg{width:22px;height:22px;flex:0 0 auto;transition:transform .45s cubic-bezier(.68,-.35,.27,1.35),opacity .2s}
+.cb-fab .ic-x{position:absolute;left:16px;opacity:0;transform:rotate(-90deg) scale(.6)}
+.cb-fab .cb-lbl{max-width:0;overflow:hidden;white-space:nowrap;opacity:0;transition:max-width .45s cubic-bezier(.22,1,.36,1),opacity .3s,margin .45s}
+.cb-fab:hover .cb-lbl,.cb-fab:focus-visible .cb-lbl{max-width:240px;opacity:1;margin-left:10px}
+.cb-fab.on .ic-chat{opacity:0;transform:rotate(90deg) scale(.6)}
+.cb-fab.on .ic-x{opacity:1;transform:none}
+.cb-fab.on .cb-lbl{max-width:0;opacity:0;margin-left:0}
+.cb{position:fixed;right:clamp(16px,2.4vw,28px);bottom:calc(clamp(16px,2.4vw,28px) + 68px);z-index:45;width:min(400px,calc(100vw - 32px));height:min(600px,calc(100svh - 120px));display:flex;flex-direction:column;gap:10px;color:var(--cb-tx);font-family:inherit;opacity:0;transform:translateY(14px) scale(.97);transform-origin:bottom right;transition:opacity .25s,transform .35s cubic-bezier(.22,1,.36,1)}
+.cb[hidden]{display:none}
+.cb.open{opacity:1;transform:none}
+.cb-card{flex:1;min-height:0;display:flex;flex-direction:column;background:rgba(24,24,28,.86);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);border:1px solid rgba(255,255,255,.12);border-radius:24px;box-shadow:0 20px 45px -15px rgba(0,0,0,.45),var(--cb-hi);overflow:hidden;position:relative}
+.cb-h{border-bottom:1px solid var(--cb-ln2);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 14px 12px 16px}
+.cb-id{display:flex;align-items:center;gap:11px}
+.cb-av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(160deg,var(--cb-3),var(--cb-1));border:1px solid var(--cb-ln);box-shadow:var(--cb-hi);font-weight:700;font-size:17px;letter-spacing:-.04em}
+.cb-h b{display:flex;align-items:baseline;font-size:18px;font-weight:700;letter-spacing:-.04em;line-height:1}
+.cb-h b i{display:inline-block;width:.3em;height:.3em;border-radius:50%;background:var(--cb-tx);margin-left:.08em}
+.cb-h small{display:flex;align-items:center;gap:6px;margin-top:5px;color:#c9c8d0;font-size:12.5px}
+.cb-on{width:6px;height:6px;border-radius:50%;background:#6fc28e;box-shadow:0 0 0 3px rgba(111,194,142,.18)}
+.cb-x{width:36px;height:36px;border:1px solid var(--cb-ln);border-radius:50%;background:rgba(255,255,255,.07);color:var(--cb-tx);display:grid;place-items:center;cursor:pointer;box-shadow:var(--cb-hi);transition:background .2s}
+.cb-x svg{width:15px;height:15px}.cb-x .ic-chat{display:none}
+.cb-x:hover{background:#303038}
+.cb-log{flex:1;min-height:0;overflow-y:auto;padding:16px 14px 6px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3a3a42 transparent}
+.cb-chips{display:flex;flex-wrap:wrap;gap:6px;padding:4px 14px 10px}
+.cb-chips:empty{display:none}
+.cb-in{position:relative;padding:0 12px 12px}
+.cb-in textarea{display:block;width:100%;resize:none;border:0;outline:0;background:transparent;color:var(--cb-tx);font:inherit;font-size:16px;line-height:1.45;padding:12px 6px 14px;max-height:120px;border-top:1px solid var(--cb-ln2)}
+.cb-in textarea::placeholder{color:var(--cb-mu)}
+.cb-bar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cb-tools{display:flex;align-items:center;gap:8px}
+.cb-ib{width:38px;height:38px;flex:0 0 auto;border:1px solid var(--cb-ln);border-radius:999px;background:rgba(255,255,255,.07);color:var(--cb-tx);display:grid;place-items:center;cursor:pointer;box-shadow:var(--cb-hi);transition:background .2s,color .2s,transform .3s cubic-bezier(.68,-.35,.27,1.35)}
+.cb-ib svg{width:18px;height:18px}
+.cb-ib:hover{background:#303038}
+.cb-more.on{transform:rotate(45deg)}
+.cb-send{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--cb-mu);box-shadow:none}
+.cb-send:not(:disabled){background:var(--cb-tx);border-color:var(--cb-tx);color:var(--cb-bg);cursor:pointer}
+.cb-send:not(:disabled):hover{transform:translateY(-2px)}
+.cb-send:disabled{cursor:default}
+.cb-pill{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 14px 0 16px;border:1px solid var(--cb-ln);border-radius:999px;background:rgba(255,255,255,.07);color:var(--cb-tx);font:inherit;font-size:15px;font-weight:500;cursor:pointer;box-shadow:var(--cb-hi);transition:background .2s}
+.cb-pill:hover{background:#303038}
+.cb-pill .cv{width:15px;height:15px;color:var(--cb-mu)}
+.cb-pop{position:absolute;left:12px;bottom:calc(100% - 4px);width:min(240px,calc(100% - 24px));padding:8px;border:1px solid rgba(255,255,255,.14);border-radius:16px;background:linear-gradient(160deg,rgba(52,52,62,.82) 0%,rgba(31,31,37,.82) 100%);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 22px 48px -10px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.08);display:grid;gap:2px;animation:cbIn .25s cubic-bezier(.22,1,.36,1) both;z-index:2}
+.cb-pop[hidden]{display:none}
+.cb-pop p{margin:4px 10px 6px;font-size:12px;color:var(--cb-mu)}
+.cb-pop button{text-align:left;border:0;background:transparent;color:var(--cb-tx);font:inherit;font-size:15px;font-weight:500;padding:8px 10px;border-radius:11px;cursor:pointer}
+.cb-pop button:hover,.cb-pop button:focus-visible{background:rgba(255,255,255,.06)}
+.cb-m{max-width:88%;padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.5;animation:cbIn .35s cubic-bezier(.22,1,.36,1) both;overflow-wrap:anywhere}
+.cb-m.bot{align-self:flex-start;background:linear-gradient(160deg,rgba(60,60,70,.55) 0%,rgba(31,31,37,.45) 100%);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);border-bottom-left-radius:6px}
+.cb-m.me{align-self:flex-end;background:var(--cb-gr);border:1px solid var(--cb-grl);box-shadow:inset 0 1px 0 rgba(255,255,255,.12);border-bottom-right-radius:6px}
+.cb-m b{font-weight:700}
+.cb-m a{color:var(--cb-link);text-decoration:underline;text-underline-offset:2px}
+@keyframes cbIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.cb-dots{display:inline-flex;gap:4px;padding:4px 0}
+.cb-dots i{width:6px;height:6px;border-radius:50%;background:var(--cb-mu);animation:cbDot 1s infinite ease-in-out}
+.cb-dots i:nth-child(2){animation-delay:.15s}.cb-dots i:nth-child(3){animation-delay:.3s}
+@keyframes cbDot{0%,80%,100%{opacity:.3;transform:none}40%{opacity:1;transform:translateY(-3px)}}
+.cb-ps{display:grid;gap:6px;margin-top:10px}
+.cb-p{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:center;text-align:left;padding:6px;border:1px solid var(--cb-ln2);border-radius:12px;background:rgba(0,0,0,.18);color:var(--cb-tx);font:inherit;cursor:pointer;transition:background .2s,transform .2s}
+.cb-p:hover{background:rgba(255,255,255,.05);transform:translateX(3px)}
+.cb-p img{width:48px;height:48px;object-fit:cover;border-radius:8px}
+.cb-p b{display:block;font-size:13.5px;line-height:1.3}.cb-p small{display:block;font-size:12px;color:var(--cb-mu);line-height:1.3;margin-top:2px}
+.cb-chip{border:1px solid var(--cb-ln);background:rgba(255,255,255,.07);color:var(--cb-tx);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;box-shadow:var(--cb-hi);animation:cbIn .35s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i) * 60ms);transition:background .2s}
+.cb-chip:hover{background:#303038}
+.cb-promo{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 10px 10px 16px;border:1px solid var(--cb-ln2);border-radius:18px;background:radial-gradient(52% 130% at 81% 50%,rgba(58,126,86,.5) 0%,rgba(34,78,52,.3) 48%,rgba(24,24,28,.6) 85%);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);border-color:rgba(255,255,255,.12);box-shadow:0 14px 32px -12px rgba(0,0,0,.4),inset -1px 0 0 rgba(120,200,150,.22);font-size:14px;}
+.cb-promo b{font-weight:700}
+.cb-promo a{color:var(--cb-link);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.cb-go{flex:0 0 auto;height:32px;padding:0 14px;border:1px solid var(--cb-grl);border-radius:999px;background:var(--cb-gr);color:var(--cb-tx);font:inherit;font-size:14px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.12);transition:background .2s}
+.cb-go:hover{background:rgba(96,148,114,.68)}
+@media (max-width:600px){.cb{right:8px;left:8px;width:auto;bottom:80px;height:min(74svh,600px)}.cb-fab{right:16px;bottom:16px}.cb-promo{font-size:13px}}
+@media (prefers-reduced-motion:reduce){.cb,.cb-m,.cb-chip,.cb-pop,.cb-fab svg,.cb-fab .cb-lbl{transition:none!important;animation:none!important}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.cb-card,.cb-fab{background:rgba(24,24,28,.96)}}
+.lb :focus-visible,.cb :focus-visible,.cb-fab:focus-visible{outline-color:#fff}
+.cb-in:has(textarea:focus-visible){outline:2px solid rgba(255,255,255,.9);outline-offset:2px}
+
+
+/* PORTADA: frase, botons i tira d'obres lligada a la paraula del "Som…" */
+.hero{flex-direction:column;justify-content:flex-start;padding:0 var(--pad) clamp(28px,4vh,44px)}
+
+
+/* PORTADA B: composició editorial. Text a l'esquerra; a la dreta, foto gran fins a la vora, bloc de pedra al darrere,
+   fitxa de l'obra superposada i l'obra següent en petit */
+
+
+/* PORTADA C: minimalista. Molt de blanc, tipografia gran com a element de disseny i una sola finestra d'obra */
+
+
+/* PORTADA D: làmina d'arquitectura. Marc, eixos estructurals (A B C / 1 2) amb traç i punt, cota, nord i escala,
+   i un caixetí que diu quina obra és. El "Som…" viu dins la làmina, a la crugia A */
+.ld{display:none}
+
+
+/* PORTADA E: travelling del paisatge a l'interior (presa única lligada a l'scroll) */
+
+
+/* PORTADA F: estil "The Digital Third". Caixa de línies negres, titular condensat enorme sobre foto en blanc i negre,
+   pestanyes verticals de navegació a la dreta i una franja inferior amb la marca i el botó negre */
+
+
+
+/* PORTADA S: regle minimal, fons blanc i barra de vidre */
+.ts{display:none}
+.hero.vs{display:block;min-height:0;padding:0;width:auto;margin:0;background:#fff}
+.hero.vs>:not(.ts){display:none!important}
+.hero.vs .ts{display:block;background:#fff;padding:196px var(--pad) 40px;max-width:1520px;margin:0 auto}
+.ts-hd{margin-bottom:28px}
+.ts-som{margin:0;font-family:var(--bd);font-size:clamp(26px,2.6vw,38px);line-height:1;letter-spacing:-.035em;color:var(--ink);white-space:nowrap}
+.ts-som>span{font-weight:300;color:#a3a19c}
+.ts-som b{font-weight:700}
+.ts-som b::after{content:".";color:var(--stone)}
+.ts-som .ch{display:inline-block;animation:chIn .45s cubic-bezier(.25,.1,.25,1) both}
+.ts-im{position:relative;height:min(56svh,640px);min-height:320px;overflow:hidden;background:#f2f1ef}
+.ts-im>img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;z-index:0;visibility:hidden;transition:clip-path .9s cubic-bezier(.42,0,0,1),transform .9s cubic-bezier(.42,0,0,1)}
+.ts-im>img.base{visibility:visible;z-index:1}
+.ts-im>img.on{visibility:visible;z-index:2}
+.ts-ft{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-top:18px;color:var(--ink)}
+.ts-tw{min-width:0;display:flex;align-items:baseline;gap:14px}
+.ts-t{position:relative;margin:0;overflow:hidden;font-family:var(--bd);font-size:15px;font-weight:600;line-height:1.3;letter-spacing:0;color:var(--ink);height:1.3em}
+.ts-t span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:transform .6s cubic-bezier(.42,0,0,1) .1s}
+.ts-t span.in{transform:translateY(105%);transition:none}
+.ts-t span.out{position:absolute;left:0;top:0;transform:translateY(-105%);transition:transform .3s cubic-bezier(.42,0,1,1)}
+.ts-pl{margin:0;font-size:15px;color:#9a9893;white-space:nowrap}
+.ts-v{border:0;background:none;padding:0;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:inherit;line-height:1.3}
+.ts-od{display:inline-flex;font-family:var(--bd);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3em;height:1.3em}
+.ts-od .r{display:inline-block;overflow:hidden;height:1.3em;width:.62em;transition:width .6s cubic-bezier(.16,1,.3,1),opacity .6s}
+.ts-od .r.z{width:0;opacity:0}
+.ts-od .r>span{display:flex;flex-direction:column;transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.ts-od i{display:block;height:1.3em;line-height:1.3em;font-style:normal;text-align:center}
+.ts-v small{font-size:15px;color:#9a9893}
+.ts-v:hover small{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.ts-rl{position:relative;height:40px;margin:26px 0 0;cursor:ew-resize;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
+.ts-rl:focus-visible{box-shadow:none;outline:1px dotted rgba(46,50,54,.4);outline-offset:4px}
+.ts-tk i{position:absolute;top:0;width:1px;height:6px;background:rgba(0,0,0,.12);transform:translateX(-50%)}
+.ts-tk i.mj{height:10px;background:rgba(0,0,0,.28)}
+.ts-lb span{position:absolute;top:20px;transform:translateX(-50%);font-size:12px;color:rgba(0,0,0,.35);white-space:nowrap;transition:color .5s}
+.ts-lb span.on{color:var(--ink)}
+.ts-lb span:first-child{transform:none}
+.ts-lb span:last-child{transform:translateX(-100%)}
+.ts-hd-l{position:absolute;left:0;top:-5px;margin-left:-1px;width:2px;height:20px;background:var(--ink);pointer-events:none}
+.ts-hd,.ts-card{opacity:0;transition:opacity 1.1s ease}
+.ts-card{transition-delay:.2s}
+.ts.in .ts-hd,.ts.in .ts-card{opacity:1}
+.ts-lb,.ts-lb span.on{display:none!important}
+.ts-rl{height:22px}
+@media (max-width:860px){
+  .hero.vs .ts{padding-top:176px;padding-bottom:28px}
+  .ts-hd{margin-bottom:18px}
+  .ts-im{height:auto;aspect-ratio:4/5;min-height:0}
+  .ts-ft{margin-top:14px}
+  .ts-tw{flex-direction:column;gap:2px}
+  .ts-pl,.ts-t,.ts-v small,.ts-od{font-size:14px}
+  .ts-lb span{display:none}
+  .ts-lb span.on{display:block}
+}
+@media (prefers-reduced-motion:reduce){.ts *{transition:none!important}.ts-hd,.ts-card{opacity:1}}
+
+/* PORTADA R: plànol (model ecoLINEAR) amb la tipografia i els colors del web publicat */
+.dr{display:none}
+@media (prefers-reduced-motion:reduce){.dr *{transition:none!important}}
+
+/* PORTADA Q: capes (model Altura). Foto, logo gegant al cel i l'edifici retallat per sobre; recorregut de l'obra a sota */
+.aq-h{--hh:max(100svh,620px);position:relative;height:var(--hh);overflow:hidden;background:linear-gradient(180deg,#00204a 0%,#01316f 45%);color:#fff}
+.aq-h::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,20,52,.25) 0%,transparent 18%,transparent 50%,rgba(10,12,16,.5) 72%,rgba(10,12,16,.82) 100%);pointer-events:none}
+/* recorregut */
+.aq-wk{position:relative;height:calc(7.6 * 100svh);background:#111}
+@media (max-width:860px){
+  .aq-h{--hh:max(calc(100svh - 66px),560px)}
+}
+
+/* BARRA DE VIDRE tipus Apple (amb la portada Q, a tot el web): fosca sobre fotos i fons foscos, clara sobre fons clars */
+.glassnav .top{position:fixed;left:0;right:0;top:0;background:transparent;border:0;-webkit-backdrop-filter:none;backdrop-filter:none;pointer-events:none}
+.glassnav .bar{pointer-events:auto;height:60px;margin-top:16px;padding:0 8px 0 22px;border-radius:14px;background:rgba(28,28,30,.28);border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);transition:background .45s ease,border-color .45s ease,box-shadow .45s ease}
+.glassnav .logo img{filter:brightness(0) invert(1);transition:filter .45s ease;width:74px;height:auto}
+.glassnav .nav a{font-family:var(--bd);font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:#fff;transition:color .45s ease}
+.glassnav .nav a:hover{color:#fff}
+.glassnav .lang{color:rgba(255,255,255,.85)}
+.glassnav .mnu{color:#fff}
+.glassnav .btn-k{background:var(--stone);color:#2e3236;border-radius:9px;min-height:42px;padding:0 20px;font-weight:700}
+.glassnav .btn-k:hover{background:#fff}
+.glassnav .top.on-lt .bar{background:rgba(255,255,255,.8);border-color:rgba(0,0,0,.08);box-shadow:0 10px 30px -14px rgba(0,0,0,.28)}
+.glassnav .top.on-lt .logo img{filter:none}
+.glassnav .top.on-lt .nav a,.glassnav .top.on-lt .mnu{color:var(--ink)}
+.glassnav .top.on-lt .lang{color:var(--ink-2)}
+.glassnav .top.on-lt .btn-k:hover{background:var(--ink);color:#fff}
+@media (max-width:860px){
+  .glassnav .bar{margin-top:10px;width:calc(100% - 20px);height:56px;padding:0 6px 0 16px;position:relative}
+  .glassnav .nav{top:64px;border-radius:14px;border:0;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+  .glassnav .nav a{color:var(--ink)}
+  .glassnav .aq-h{--hh:max(100svh,560px)}
+}
+
+/* PORTADA P: fitxa. Columna blanca amb el titular, l'obra a la dreta amb una fitxa unida a un punt de l'edifici */
+
+/* PORTADES M, N i O: les tres proves a partir de referents (Mesura, MVRDV i Heatherwick) */
+.im{display:none}
+
+/* M: cinema */
+
+/* N: tipografia */
+
+/* O: immersió en una obra */
+
+/* PORTADA L: del dibuix a l'obra. El traç del projecte damunt del paper blanc i la foto de l'obra que el substitueix */
+.lt{display:none}
+@property --d{syntax:'<percentage>';inherits:true;initial-value:100%}
+@property --x{syntax:'<percentage>';inherits:true;initial-value:0%}
+
+/* PORTADA K: alçat de carrer. Les obres, a mides diferents, sobre una sola línia de terra */
+
+/* PORTADA J: el logo de dexo com un volum blanc amb l'ombra del sol real de Balaguer */
+
+/* PORTADA H: índex d'obres. Text de l'estudi i llista d'obres a l'esquerra, la foto de l'obra a la dreta */
+.ix{display:none}
+
+/* PORTADA I: l'obra a pantalla completa, amb el menú per sobre */
+
+/* PORTADA G: estil Daylight adaptat a dexo. Foto càlida a pantalla completa, retícula de línies fines, titular en serif,
+   cel·la amb la textura de pedra de l'estudi, dades petites a les cel·les i un camp per començar la conversa */
+
+/* responsive */
+@media (max-width:1100px){
+  .nav{gap:16px}
+  .es{grid-template-columns:1fr 1fr;row-gap:36px}.es-p{grid-column:1}.es-f{grid-column:2;padding-left:0}.es-t{grid-column:1/3;grid-row:2;padding:0}
+  .es2{grid-template-columns:1fr 1fr;row-gap:24px}.es2 .yr{grid-column:1/3}.es2 .cr,.es2 .cr:nth-child(2){grid-column:auto;padding:0 20px 0 0}
+  .pj{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ct{grid-template-columns:1fr}.ct-i{margin-bottom:28px}.cf{grid-column:1}
+}
+@media (max-width:860px){
+  .bar{gap:10px}.right{margin-left:auto}.mnu{display:grid}.nav{position:absolute;left:0;right:0;top:66px;flex-direction:column;align-items:stretch;gap:0;margin:0;padding:8px var(--pad) 20px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 20px 30px -20px rgba(0,0,0,.15);display:none}.nav.open{display:flex}.nav a{padding:14px 0;font-size:14px;border-bottom:1px solid var(--line)}.nav a::after{display:none}
+  .es{grid-template-columns:1fr}.es-p,.es-f,.es-t{grid-column:1;grid-row:auto}.es-p{display:flex;align-items:center;gap:18px;padding:0}.es-p .ph{width:110px;flex:0 0 110px}.es-p figcaption{padding:0}
+  .es2{grid-template-columns:1fr}.es2 .yr{grid-column:1}.cr{flex-direction:column;align-items:flex-start;gap:10px}
+  .pc{height:min(440px,110vw)}.aw-ph{grid-column:2;grid-row:1;justify-self:end}
+  .cf{grid-template-columns:1fr}.f.msg{grid-column:1;grid-row:auto}.cf-b,.cf-n{grid-column:1}
+  .ft .wrap{grid-template-columns:1fr;justify-items:center;text-align:center}.ft nav{justify-content:center}
+  .lb-m{padding:0 12px}.lb-a{top:auto;bottom:-62px;transform:none}.lb-p{left:auto;right:calc(var(--pad) + 60px)}
+  .lb-f{padding-right:140px}
+}
+@media (max-width:700px){.pj{grid-template-columns:repeat(2,minmax(0,1fr))}.pc{height:300px}}
+@media (max-width:520px){.pj{grid-template-columns:1fr}.pc{height:360px}}
+
+/* Botons en blau dexo, RGB 41,107,255 */
+:root{--btn:#2e3236;--btn-h:#4b5054;--blau:#296bff;--blau-h:#1d55d9}
+.btn-k,.glassnav .btn-k,.pill,.ts-k{background:var(--btn);color:#fff}
+.btn-k:hover,.glassnav .btn-k:hover,.glassnav .top.on-lt .btn-k:hover,.pill:hover,.ts-k:hover{background:var(--btn-h);color:#fff}
+
+/* Portada S: la barra de vidre fa el mateix ample que la foto */
+.tsnav .glassnav .bar,.glassnav.tsnav .bar{width:min(1520px - 2*var(--pad),100% - 2*var(--pad));max-width:none;margin-left:auto;margin-right:auto}
+
+/* Títols de secció com el web publicat: Manrope, grans, tancats amb un punt */
+.sh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px 64px;margin:0 0 36px;text-align:left}
+.sh h2{margin:0;padding-left:0;font-family:var(--bd);font-weight:600;font-size:clamp(40px,4.6vw,68px);letter-spacing:-.04em;line-height:1;text-transform:none}
+.sh h2::after{content:"";display:inline-block;width:.2em;height:.2em;margin-left:.07em;border-radius:50%;background:currentColor;vertical-align:baseline}
+.sh p{margin:10px 0 0;max-width:560px;font-size:16px;line-height:1.6}
+.flt{justify-content:flex-start;margin:-8px 0 40px}
+/* Plomada sense ombra */
+.pm{box-shadow:none}
+
+
+/* Estudi compacte: premis dins la franja d'acreditacions */
+#estudi.sec{padding:clamp(56px,6vw,96px) 0 clamp(28px,3vw,44px)}
+#estudi .sh{margin-bottom:28px}
+.es{grid-template-columns:minmax(0,.8fr) minmax(0,2fr) minmax(0,1fr)}
+.es-t{grid-column:2/3}
+.es-t h3,.es-f h3{margin:0 0 12px;font-size:17px}
+.es-p .ph{aspect-ratio:1/1}
+.sp{gap:8px}
+.sp li{padding:0;gap:10px;font-size:14.5px}
+.sp svg{width:24px;height:18px;flex:0 0 24px}
+.es-p .ph{max-width:220px}
+.es2{grid-template-columns:minmax(0,.8fr) repeat(3,minmax(0,1fr));align-items:start;margin-top:24px;padding-top:20px}
+.es2 .yr b{font-size:clamp(60px,5.4vw,80px)}
+.es2 .yr>span{font-size:14.5px}
+.es2 .cr{flex-direction:column;align-items:flex-start;gap:10px;padding:0 clamp(12px,1.6vw,22px)}
+.es2 .cr .lg{height:34px}
+.es2 .cr h4{font-size:14.5px}
+.es2 .cr p{font-size:13px}
+.pr h4{margin-bottom:6px}
+.pr p{display:flex;gap:8px;align-items:baseline;margin:0 0 4px}
+.pr p b{flex:0 0 22px;font-family:var(--hd);font-weight:400;font-size:17px;color:var(--stone)}
+.pr-l{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:zoom-in;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.pr-l:hover{text-decoration-color:currentColor}
+@media (max-width:1000px){.es{grid-template-columns:1fr 1fr}.es-t{grid-column:1/3}.es2{grid-template-columns:1fr 1fr;row-gap:22px}.es2 .yr{grid-column:auto}.es2 .cr{padding:0 16px 0 0}}
+@media (max-width:640px){.es{grid-template-columns:1fr;row-gap:24px}.es-t{grid-column:1}.es2{grid-template-columns:1fr 1fr;row-gap:18px}.es2 .yr{grid-column:1/3}.es2 .cr .lg{height:28px}.es2 .pr{grid-column:1/3}.sp{grid-template-columns:1fr 1fr;gap:10px 12px}.sp li{font-size:13.5px}}
+
+/* FONS NOUS: tot blanc, sense difuminats, un sol bloc antracita al final (Contacte + peu) */
+.fnou .fd{display:none}
+.fnou #projectes{background:var(--paper);color:var(--ink);--grid:var(--line)}
+.fnou #projectes .sh h2{color:var(--ink)}
+.fnou #projectes .sh p{color:var(--ink-2)}
+.fnou #estudi>.wrap{border-top:1px solid var(--line);padding-top:clamp(40px,4.4vw,64px)}
+.fnou #estudi.sec{padding-top:clamp(24px,3vw,40px)}
+.fnou .pm{background:#f4f4f2;color:var(--ink)}
+.fnou #contacte{padding-bottom:clamp(40px,4vw,64px)}
+.fnou .ft{background:var(--gr);border-top:1px solid rgba(255,255,255,.08)}
+
+/* DISSENY NOU 2: una sola tipografia (Manrope) */
+.fnou .flt{gap:6px 26px}
+.fnou .flt button{font-family:var(--bd);font-size:14.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--mute)}
+.fnou .flt button:hover,.fnou .flt button[aria-pressed="true"]{color:var(--ink)}
+.fnou .flt button::after{background:var(--ink)}
+.fnou .flt sup{color:var(--mute)}
+.fnou .pr p b{font-family:var(--bd);font-weight:700;font-size:14px}
+.fnou .yr b{font-family:var(--bd);font-weight:800;letter-spacing:-.06em}
+.fnou .lb-h b,.fnou .xp-h b{font-family:var(--bd);font-weight:600;letter-spacing:-.01em;text-transform:none}
+/* Projectes nets: foto sense vel, nom i lloc a sota */
+.fnou .pj{gap:10px 4px;padding:0 var(--pad);max-width:1600px;margin:0 auto}
+.fnou .pc{height:auto;overflow:visible;background:none;color:var(--ink);display:flex;flex-direction:column}
+.fnou .pc::before,.fnou .pc::after{display:none}
+.fnou .pc img{position:relative;inset:auto;height:clamp(260px,22vw,360px);background:#f2f1ef;transition:opacity .4s}
+.fnou .pc:hover img,.fnou .pc:focus-visible img{transform:none;opacity:.86}
+.fnou .pc-t{position:static;padding:8px 0 0;font-family:var(--bd);font-weight:600;font-size:15px;line-height:1.35;letter-spacing:0;text-transform:none;color:var(--ink)}
+.fnou .pc-t small{margin-top:2px;font-weight:400;font-size:14px;color:var(--mute)}
+.fnou .pc-n{display:none}
+.fnou .pc[aria-expanded="true"]{box-shadow:none}
+.fnou .pc[aria-expanded="true"] .pc-t{color:var(--btn)}
+.fnou .pj .xp{background:transparent}
+.fnou .xp-h b{color:var(--ink)}
+.fnou .xp-h small{color:var(--mute)}
+.fnou .xp-btns button{border-color:var(--line);color:var(--ink)}
+.fnou .xp-btns button:hover{border-color:var(--ink);color:var(--ink)}
+.fnou .xp-ph{background:transparent}
+.fnou .xp-bar{background:rgba(0,0,0,.08)}
+.fnou .xp-bar span{background:var(--ink)}
+.fnou .pj-more small{color:var(--mute)}
+@media (max-width:700px){.fnou .pj{gap:10px 4px}.fnou .pc img{height:clamp(200px,58vw,300px)}}
+@media (max-width:520px){.fnou .pc img{height:auto;aspect-ratio:4/3}}
+/* Formulari amb línies */
+.fnou .cf{gap:14px 28px}
+.fnou .f{background:none;padding:12px 0 0;border-bottom:1px solid rgba(255,255,255,.3);transition:border-color .2s}
+.fnou .f:focus-within{box-shadow:none;border-color:#fff}
+.fnou .f label{font-size:13px;color:var(--on-mu)}
+.fnou .f input,.fnou .f textarea{padding:6px 0 10px}
+
+/* Plomada com a anunci flotant discret (disseny nou) */
+.pf{display:none}
+.fnou .pf:not([hidden]){display:grid}
+.pf{position:fixed;z-index:44;left:clamp(16px,2.4vw,28px);bottom:clamp(16px,2.4vw,28px);width:min(340px,calc(100vw - 32px));grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:start;padding:16px 14px 16px 16px;background:#fff;border:1px solid rgba(46,50,54,.14);border-radius:14px;color:var(--ink);opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+.pf.on{opacity:1;transform:none}
+.pf-v{grid-column:1/-1;display:block;margin:-4px -2px 2px -4px;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:#f4f4f2;border:1px solid rgba(46,50,54,.08)}
+.pf-v video{width:100%;height:100%;object-fit:cover;display:block}
+.pf-i{width:44px;height:44px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center}
+.pf-i svg{width:18px;height:36px}
+.pf-t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.pf-t b{font-size:15px;font-weight:700;line-height:1.3}
+.pf-t>span{font-size:13.5px;line-height:1.45;color:var(--ink-2)}
+.pf-t a{align-self:flex-start;margin-top:10px;display:inline-flex;align-items:center;min-height:36px;padding:0 16px;border-radius:999px;background:var(--btn);color:#fff;font-size:13px;font-weight:700;transition:background .25s}
+.pf-t a:hover{background:var(--btn-h)}
+.pf-x{width:28px;height:28px;margin:-6px -4px 0 0;border:0;border-radius:50%;background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center}
+.pf-x:hover{background:#f1f1ef;color:var(--ink)}
+.pf-x svg{width:11px;height:11px}
+@media (max-width:640px){
+  .pf{left:12px;right:84px;bottom:16px;width:auto;grid-template-columns:36px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 8px 10px 10px}
+  .pf-v{grid-column:1;grid-row:1;margin:0;width:64px;aspect-ratio:16/10;border-radius:7px}
+  .pf{grid-template-columns:64px minmax(0,1fr) auto}
+  .pf-i{display:none}
+  .pf-t>span{display:none}
+  .pf-t b{font-size:14px}
+  .pf-t a{margin-top:2px;min-height:0;padding:0;background:none;color:var(--btn);font-size:13px}
+  .pf-t a:hover{background:none;text-decoration:underline}
+  .pf-x{margin:0}
+}
+@media (prefers-reduced-motion:reduce){.pf{transition:none}}
+
+/* Regle de la portada S, minimal: una línia fina i un traç que marca l'obra */
+.ts-tk,.ts-lb{display:none!important}
+.ts-rl{height:18px!important;margin-top:22px}
+.ts-rl::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(46,50,54,.14)}
+.ts-hd-l{top:3px;height:12px;width:1.5px;margin-left:-.75px;background:var(--ink);border-radius:0}
+
+/* Obra oberta: la resta de projectes s'enfosqueixen i la seleccionada destaca */
+.fnou .pc img,.fnou .pc-t{transition:filter .45s ease,opacity .45s ease}
+.fnou .pj:has(.pc[aria-expanded="true"]) .pc:not([aria-expanded="true"]) img{filter:brightness(.38) saturate(.6)}
+.fnou .pj:has(.pc[aria-expanded="true"]) .pc:not([aria-expanded="true"]) .pc-t{opacity:.35}
+.fnou .pj:has(.pc[aria-expanded="true"]) .pc:not([aria-expanded="true"]):hover img{filter:brightness(.7) saturate(.85)}
+.fnou .pc[aria-expanded="true"] img{opacity:1}
+
+/* Fotos de Projectes com al web publicat: quadrades, 6 px d'espai, vel fosc amb el nom en passar-hi */
+.fnou .pj{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+@media (max-width:900px){.fnou .pj{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.fnou .pj{grid-template-columns:1fr}}
+.fnou .pc{position:relative;display:block;aspect-ratio:1/1;height:auto;overflow:hidden;border-radius:0;background:#e7e6e2}
+.fnou .pc img{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;opacity:1;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .45s ease}
+.fnou .pc:hover img,.fnou .pc:focus-visible img{transform:scale(1.04);opacity:1}
+.fnou .pc-t{position:absolute;inset:0;z-index:2;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;background:rgba(31,34,41,.6);color:#fff;font-size:18px;font-weight:500;line-height:1.2;opacity:0;transition:opacity .3s}
+.fnou .pc-t small{margin:0;font-size:13px;font-weight:400;line-height:1.4;color:#fff;opacity:.9;max-width:28ch}
+.fnou .pc:hover .pc-t,.fnou .pc:focus-visible .pc-t{opacity:1}
+.fnou .pc[aria-expanded="true"]{outline:2px solid var(--ink);outline-offset:2px}
+.fnou .pc[aria-expanded="true"] .pc-t{color:#fff}
+.fnou .pj:has(.pc[aria-expanded="true"]) .pc:not([aria-expanded="true"]) .pc-t{opacity:0}
+.fnou .pj:has(.pc[aria-expanded="true"]) .pc:not([aria-expanded="true"]):hover .pc-t{opacity:1}
+
+/* Obra desplegada: alineada amb la graella a banda i banda, fotos amb el mateix ritme que els quadrats */
+.xp-n{display:none}
+.fnou .xp-h{width:100%;margin:0;padding:26px 0 16px;align-items:flex-end}
+.fnou .xp-h b{font-size:clamp(22px,2vw,28px);letter-spacing:-.025em;line-height:1.15}
+.fnou .xp-h small{margin-top:6px;font-size:14.5px}
+.fnou .xp-btns{align-items:center;gap:6px}
+.fnou .xp-n{display:block;margin-right:12px;font-size:14px;color:var(--mute);white-space:nowrap}
+.fnou .xp-btns button{width:40px;height:40px}
+.fnou .xp-row{gap:6px;padding:0;scroll-padding-inline:0}
+.fnou .xp-ph{height:clamp(180px,15vw,280px);border-radius:0}
+.fnou .xp-ph img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.fnou .xp-ph:hover img{opacity:1;transform:scale(1.03)}
+.fnou .xp-bar{width:100%;height:1px;margin:16px 0 34px;background:rgba(46,50,54,.12)}
+@media (max-width:640px){.fnou .xp-h{flex-direction:column;align-items:flex-start;gap:12px}.fnou .xp-n{margin-right:0}.fnou .xp-ph{height:56vw}}
+
+/* Ordre Projectes > Clients > Estudi, amb menys aire entre seccions */
+.fnou #projectes.sec{padding-bottom:clamp(36px,3.6vw,52px)}
+.fnou .pj-more{margin-top:32px}
+.fnou #clients{padding:0 0 clamp(36px,3.6vw,52px)!important}
+.fnou #clients>.wrap{border-top:1px solid var(--line);padding-top:clamp(36px,3.6vw,52px)}
+.fnou #clients .sh{margin-bottom:28px}
+.fnou #estudi.sec{padding-top:0}
+.fnou #estudi>.wrap{padding-top:clamp(36px,3.6vw,52px)}
+
+/* Botons antracita; sobre fons fosc, blancs. El blau queda només per a Plomada */
+.dk .pill,.dk .btn-k{background:#fff;color:var(--ink)}
+.dk .pill:hover,.dk .btn-k:hover{background:#e7e6e2;color:var(--ink)}
+.glassnav .top:not(.on-lt) .btn-k{background:#fff;color:var(--ink)}
+.glassnav .top:not(.on-lt) .btn-k:hover{background:#e7e6e2;color:var(--ink)}
+.pf-t a{background:var(--blau)}
+.pf-t a:hover{background:var(--blau-h)}
+@media (max-width:640px){.pf-t a{background:none;color:var(--blau)}.pf-t a:hover{background:none}}
+/* Mòbil i tauleta: el nom de l'obra sota cada foto (a l'ordinador es queda amb el vel en passar el ratolí) */
+@media (max-width:900px){
+  .fnou .pj{row-gap:18px}
+  .fnou .pc{aspect-ratio:auto;overflow:visible;background:none;display:flex;flex-direction:column;text-align:left}
+  .fnou .pc img{position:relative;inset:auto;aspect-ratio:1/1;height:auto;background:#e7e6e2}
+  .fnou .pc:hover img,.fnou .pc:focus-visible img{transform:none}
+  .fnou .pc-t,.fnou .pj:has(.pc[aria-expanded="true"]) .pc:not([aria-expanded="true"]) .pc-t{position:static;opacity:1;background:none;padding:8px 0 0;align-items:flex-start;justify-content:flex-start;gap:2px;text-align:left;color:var(--ink);font-size:15px;font-weight:600;line-height:1.3}
+  .fnou .pc-t small{color:var(--mute);opacity:1;font-size:13.5px}
+  .fnou .pj:has(.pc[aria-expanded="true"]) .pc:not([aria-expanded="true"]) .pc-t{opacity:.4}
+  .fnou .pc[aria-expanded="true"]{outline:0}
+  .fnou .pc[aria-expanded="true"] img{outline:2px solid var(--ink);outline-offset:2px}
+  .fnou .pc[aria-expanded="true"] .pc-t{color:var(--ink)}
+}
+
+/* INTRO: el logo dexo gegant amb l'obra a dins; s'obre cap a la foto de la portada i acaba amb un difuminat */
+.intro{display:none}
+.in-on .intro{display:block;position:fixed;inset:0;z-index:300;overflow:hidden;cursor:pointer;--w:min(86vw,1400px);background:#fff}
+.intro.rdy{background:transparent}
+.intro>*{opacity:0}
+.intro.rdy>*{opacity:1;transition:opacity .25s ease}
+.in-on body{overflow:hidden}
+.in-ph{position:fixed;left:0;top:0;width:100vw;height:100vh;max-width:none;object-fit:cover;object-position:50% 45%}
+.in-mk{position:fixed;left:50%;top:50%;width:var(--w);height:auto;margin-left:calc(var(--w) / -2);margin-top:calc(var(--w) * -.14778);overflow:visible;will-change:transform,filter,opacity}
+@media (max-width:640px){.in-on .intro{--w:92vw}}
+
+/* Repàs: la targeta de Plomada no es veu amb el xat obert; en mòbil, símbol en lloc de la miniatura del vídeo; menú mòbil opac */
+body:has(.cb.open) .pf{display:none!important}
+@media (max-width:640px){
+  .pf-v{display:none!important}
+  .pf{grid-template-columns:36px minmax(0,1fr) auto}
+  .pf-i{display:grid!important;width:36px;height:36px;border-radius:8px}.pf-i svg{width:14px;height:28px}
+  .glassnav .nav{background:rgba(255,255,255,.98)}
+}
+
+/* Alineació vertical: tot (barra, portada, títols, graella, clients, estudi, contacte i peu) comparteix les mateixes vores */
+.fnou{--max:calc(1520px - 2 * var(--pad))}
+.fnou .pj{max-width:1520px}
+
+/* Menú centrat (escriptori) i xarxes ben visibles */
+.xs{display:flex;align-items:center;gap:4px}
+.xs a{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;color:inherit;transition:background .2s,color .2s}
+.xs svg{width:19px;height:19px}
+.xs a:hover{background:rgba(46,50,54,.08)}
+.top .xs{color:var(--ink)}
+.glassnav .top:not(.on-lt) .xs{color:#fff}
+.glassnav .top:not(.on-lt) .xs a:hover{background:rgba(255,255,255,.14)}
+@media (min-width:1001px){
+  .glassnav .bar{position:relative}
+  .glassnav .bar .nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0}
+  .glassnav .bar .right{margin-left:auto}
+}
+@media (max-width:1000px){.top .xs{display:none}}
+.xs-l{margin-top:14px;gap:10px;flex-wrap:wrap;flex-direction:row}
+.xs-l a{width:auto;height:auto;padding:10px 16px 10px 12px;gap:8px;display:inline-flex;border:1px solid rgba(255,255,255,.28);border-radius:999px;color:#fff;font-size:14px;font-weight:600}
+.xs-l a:hover{background:#fff;color:var(--ink)}
+.xs-f{display:inline-flex;margin-left:10px;vertical-align:middle}
+.ft nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.ft .xs-f a{color:var(--on-mu,#c9cbcc)}
+.ft .xs-f a:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* selector d'idioma CA · ES · EN */
+.langs{display:flex;align-items:center;gap:2px}
+.langs a{min-width:28px;height:28px;display:grid;place-items:center;padding:0 4px;border-radius:6px;font-size:12.5px;font-weight:600;letter-spacing:.02em;color:inherit;opacity:.55;transition:opacity .2s,background .2s}
+.langs a:hover{opacity:1}
+.langs a[aria-current="true"]{opacity:1}
+.top .langs{color:var(--ink)}
+.glassnav .top:not(.on-lt) .langs{color:#fff}
+
+/* passador de la portada S: fletxes rodones i punts sobre la foto */
+.ts-rl{display:none!important}
+.ts-ar{position:absolute;top:50%;z-index:5;width:40px;height:40px;margin-top:-20px;border:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;background:#fff;color:var(--ink);opacity:.72;box-shadow:0 8px 22px -8px rgba(0,0,0,.45);transition:opacity .2s,transform .2s}
+.ts-ar svg{width:22px;height:22px}
+.ts-ar:hover:not(:disabled){opacity:1;transform:scale(1.1)}
+.ts-ar:disabled{opacity:.35;cursor:not-allowed}
+.ts-pv{left:16px}.ts-nx{right:16px}
+.ts-dots{position:absolute;left:50%;bottom:16px;z-index:5;transform:translateX(-50%);display:flex;gap:8px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
+.ts-dots button{width:8px;height:8px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.5);cursor:pointer;transition:width .35s cubic-bezier(.22,1,.36,1),background .35s}
+.ts-dots button.on{width:32px;background:#fff}
+.ts-dots button:hover{background:rgba(255,255,255,.85)}
+.ts-ft{margin-top:16px}
+@media (max-width:640px){.ts-ar{width:34px;height:34px;margin-top:-17px}.ts-pv{left:10px}.ts-nx{right:10px}.ts-dots{bottom:12px;gap:6px}.ts-dots button.on{width:24px}}
+
+.btn-k{white-space:nowrap}
+
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cf-n.err{color:#f2b8a8}
+.cf-n a{text-decoration:underline}
+
+/* pàgines de text */
+body{min-height:100svh;display:flex;flex-direction:column}
+main.doc{flex:1 0 auto;width:100%;box-sizing:border-box}
+.doc{max-width:760px;margin:0 auto;padding:clamp(150px,16vw,200px) var(--pad) clamp(64px,8vw,112px);color:var(--ink-2);font-size:16px;line-height:1.7}
+.doc h1{margin:0 0 28px;font-family:var(--bd);font-weight:600;font-size:clamp(40px,5vw,64px);line-height:1;letter-spacing:-.04em;color:var(--ink)}
+.doc h1::after{content:"";display:inline-block;width:.2em;height:.2em;margin-left:.07em;border-radius:50%;background:currentColor}
+.doc h2{margin:40px 0 10px;font-family:var(--bd);font-size:20px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.doc p{margin:0 0 14px}
+.doc ul{margin:0 0 14px;padding-left:20px}
+.doc a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.doc.thx{min-height:70svh;display:flex;flex-direction:column;justify-content:center}
+.doc.thx p{font-size:18px;max-width:46ch}
+.doc .pill{display:inline-flex;align-items:center;align-self:flex-start;min-height:46px;margin-top:18px;padding:0 22px;border-radius:999px;background:var(--btn);color:#fff;font-weight:700;text-decoration:none}
+.doc .pill:hover{background:var(--btn-h)}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-<header class="top">
+<header class="top on-lt" id="top">
   <div class="bar">
-    <a class="logo" href="index.html" aria-label="dexo estudio de arquitectura, inicio"><img src="../img/logo-dexo.webp" alt="dexo estudio de arquitectura" width="87" height="34"></a>
-    <nav aria-label="Principal"><a href="index.html">Inicio</a><a href="index.html#projectes">Proyectos</a><a href="index.html#estudi">Estudio</a><a href="index.html#contacte">Contacto</a><a href="https://plomada.cat" target="_blank" rel="noopener">Plomada SiS<span class="sr"> (se abre en una pestaña nueva)</span></a></nav>
-    <div class="right">
-      <a class="lang" href="../gracies.html" hreflang="ca" lang="ca" title="Versió en català">CA</a>
-      <a class="btn simple" href="index.html#contacte">Hablemos</a>
-    </div>
+    <a class="logo" href="./" aria-label="dexo estudio de arquitectura, inicio"><img src="../img/logo-dexo.webp" alt="dexo estudio de arquitectura" width="87" height="34"></a>
+    <nav class="nav" id="nav-m" aria-label="Principal"><a href="./#projectes">Proyectos</a><a href="./#estudi">Estudio</a><a href="./#contacte">Contacto</a><a href="https://plomada.cat" target="_blank" rel="noopener">Plomada SiS<span class="sr"> (se abre en una pestaña nueva)</span></a></nav>
+    <div class="right"><button type="button" class="mnu" id="mnu" aria-expanded="false" aria-controls="nav-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="l1" d="M4 8h16"/><path class="l2" d="M4 16h16"/></svg><span class="sr">Menú</span></button><div class="xs"><a href="https://www.instagram.com/dexo_estudi/" target="_blank" rel="noopener" aria-label="Instagram de dexo (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/dexo.estudi" target="_blank" rel="noopener" aria-label="Facebook de dexo (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg></a></div><nav class="langs" aria-label="Idioma"><a href="../gracies.html" hreflang="ca" lang="ca" title="Versió en català">CA</a><a href="gracias.html" hreflang="es" lang="es" aria-current="true">ES</a><a href="../en/thanks.html" hreflang="en" lang="en" title="English version">EN</a></nav><a class="btn-k" href="./#contacte">Hablemos</a></div>
   </div>
 </header>
-<main id="main" tabindex="-1" class="wrap"><section class="hero" style="flex-direction:column;gap:24px;text-align:center">
-<h1 class="dt" style="margin:0;font-size:clamp(40px,5vw,68px);font-weight:600;letter-spacing:-.04em;line-height:1">Gracias</h1>
-<p style="margin:0;max-width:46ch;color:var(--ink-2)">He recibido su mensaje y le responderé personalmente lo antes posible.</p>
-<a class="btn plus" href="index.html"><span class="lbl">Volver al inicio</span><svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line class="h" x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/></svg></a>
-</section></main>
-<footer class="foot wrap">
-  <div class="box">
-    <div class="row1">
-      <div><img src="../img/logo-dexo.webp" alt="dexo estudio de arquitectura" width="92" height="36" loading="lazy"><p>Estudio de arquitectura en Balaguer. Proyecto, rehabilitación, dirección de ejecución y coordinación de seguridad y salud.</p></div>
-      <a class="btn plus" href="index.html#contacte"><span class="lbl">Hablemos</span><svg class="pl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line class="h" x1="4" y1="12" x2="20" y2="12"/><line class="v" x1="12" y1="4" x2="12" y2="20"/></svg></a>
-    </div>
-    <div class="cols">
-      <div><span>Estudio</span><a href="index.html#estudi">Quiénes somos</a><a href="index.html#projectes">Proyectos</a><a href="index.html#contacte">Contacto</a></div>
-      <div><span>Servicios</span><span>Proyecto</span><span>Rehabilitación</span><span>Dirección de ejecución</span><span>Seguridad y salud</span></div>
-      <div><span>Contacto</span><a href="mailto:info@dexoestudi.com">info@dexoestudi.com</a><a href="tel:+34606750036">+34 606 750 036</a><span>Ptge. Gaspar de Portolà, 1, 1.º 1.ª<br>25600 Balaguer</span></div>
-      <div><span>Redes</span><a href="https://www.instagram.com/dexo_estudi/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/dexo.estudi" target="_blank" rel="noopener">Facebook</a></div>
-      <div><span>Legal</span><a href="privacidad.html">Aviso legal y privacidad</a><a href="accesibilidad.html">Accesibilidad</a></div>
-    </div>
-    <div class="legal"><span>© 2026 dexo estudio de arquitectura</span><span>Ptge. Gaspar de Portolà, 1, 1.º 1.ª · 25600 Balaguer · info@dexoestudi.com</span></div>
-  </div>
-</footer>
-<script src="../assets/site.es.js?v=1793607804"></script>
+<main id="main" tabindex="-1" class="doc thx">
+<h1>Gracias</h1>
+<p>He recibido su mensaje y le responderé personalmente lo antes posible.</p>
+<a class="pill" href="./">Volver al inicio</a>
+</main>
+<footer class="ft"><div class="wrap"><img src="../img/logo-dexo.webp" alt="dexo estudio de arquitectura" width="87" height="34" loading="lazy"><p>© 2026 dexo, estudio de arquitectura en Balaguer</p><nav aria-label="Legal"><a href="privacidad.html">Aviso legal y privacidad</a><a href="accesibilidad.html">Accesibilidad</a><span class="xs xs-f"><a href="https://www.instagram.com/dexo_estudi/" target="_blank" rel="noopener" aria-label="Instagram de dexo (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/dexo.estudi" target="_blank" rel="noopener" aria-label="Facebook de dexo (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg></a></span></nav></div></footer>
+<script>
+(() => {
+  const mnu = document.getElementById('mnu'), nav = document.getElementById('nav-m'), top = document.getElementById('top');
+  const set = (o) => { nav.classList.toggle('open', o); mnu.setAttribute('aria-expanded', String(o)); };
+  mnu.addEventListener('click', () => set(!nav.classList.contains('open')));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+  const sc = () => top.classList.toggle('sc', scrollY > 10); addEventListener('scroll', sc, { passive: true }); sc();
+})();
+</script>
 </body>
 </html>
