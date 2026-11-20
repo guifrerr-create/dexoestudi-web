@@ -24,7 +24,7 @@
     ['Vivienda unifamiliar', 'Dirección de ejecución y coordinación de seguridad y salud', 'Vilanova de la Sal', [H, D], 'vilanova-sal'],
     ['Vivienda unifamiliar', 'Dirección de ejecución y coordinación de seguridad y salud', 'Tèrmens', [H, D], 'termens'],
     ['Reforma de local para oficina', 'Reforma de local para actividad', 'Balaguer', [R, A], 'oficina-balaguer'],
-    ['Edificio plurifamiliar de viviendas', 'Dirección de ejecución y coordinación de seguridad y salud', 'Balaguer', [H, D], 'plurifamiliar'],
+    ['Edificio plurifamiliar de 54 viviendas', 'Dirección de ejecución y coordinación de seguridad y salud', 'Balaguer', [H, D], 'plurifamiliar'],
     ['Reforma de la entrada de un edificio plurifamiliar', 'Reforma', 'Balaguer', [R], 'entrada'],
     ['Reforma de vivienda en edificio plurifamiliar', 'Reforma', 'Balaguer', [H, R], 'pis-balaguer'],
     ['Reforma del vestíbulo de un edificio plurifamiliar', 'Reforma', 'Balaguer', [R], 'vestibul'],
